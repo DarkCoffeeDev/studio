@@ -24,9 +24,14 @@ const ParseUserIntentOutputSchema = z.object({
     .string()
     .describe('The intent of the user command (e.g., water_plants, check_status).'),
   parameters: z
-    .record(z.any())
+    .object({
+      duration: z
+        .number()
+        .optional()
+        .describe('The watering duration in minutes.'),
+    })
     .describe(
-      'A JSON object containing the parameters for the command (e.g., duration, frequency, time).' 
+      'A JSON object containing the parameters for the command (e.g., { "duration": 10 }).'
     )
     .optional(),
 });

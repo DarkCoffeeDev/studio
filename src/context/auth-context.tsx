@@ -1,9 +1,9 @@
 "use client";
 
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
-import { getAuth, onAuthStateChanged, User, signOut as firebaseSignOut, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { onAuthStateChanged, User, signOut as firebaseSignOut, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
-import { auth, db, googleProvider } from '@/lib/firebase';
+import { auth, db, googleProvider, firebaseConfigured } from '@/lib/firebase';
 import type { AppUser } from '@/lib/types';
 import { useRouter } from 'next/navigation';
 
@@ -18,8 +18,23 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+const FirebaseNotConfigured = () => (
+    <div className="flex h-screen w-full items-center justify-center bg-gray-100 p-4 dark:bg-gray-900">
+        <div className="w-full max-w-lg rounded-lg border bg-card p-8 text-center shadow-lg">
+            <h1 className="text-2xl font-bold text-destructive">Firebase Not Configured</h1>
+            <p className="mt-4 text-muted-foreground">
+                Your Firebase configuration is missing or incomplete. Please add your Firebase project's configuration keys to the <strong>.env</strong> file at the root of this project.
+            </p>
+            <p className="mt-2 text-sm text-muted-foreground">
+                You can find these values in your Firebase project's settings under "Web apps". After updating the file, you may need to restart the development server.
+            </p>
+        </div>
+    </div>
+);
+
+
 const createUserDocument = async (user: User, additionalData?: { displayName: string }) => {
-  if (!user) return;
+  if (!user || !db) return;
   const userRef = doc(db, `users/${user.uid}`);
   const snapshot = await getDoc(userRef);
 
@@ -46,6 +61,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const router = useRouter();
 
   useEffect(() => {
+    if (!auth) {
+        setLoading(false);
+        return;
+    }
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         await createUserDocument(user);
@@ -60,6 +79,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }, []);
 
   const signInWithGoogle = async () => {
+    if (!auth || !googleProvider) return;
     try {
       setLoading(true);
       const result = await signInWithPopup(auth, googleProvider);
@@ -73,6 +93,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const signUpWithEmail = async (name: string, email: string, pass: string) => {
+    if (!auth) return;
     setLoading(true);
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
@@ -86,6 +107,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }
 
   const signInWithEmail = async (email: string, pass: string) => {
+    if (!auth) return;
     setLoading(true);
     try {
         await signInWithEmailAndPassword(auth, email, pass);
@@ -96,6 +118,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }
 
   const logout = async () => {
+    if (!auth) return;
     try {
       await firebaseSignOut(auth);
       router.push('/login');
@@ -103,6 +126,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       console.error("Error signing out", error);
     }
   };
+
+  if (!firebaseConfigured) {
+      return <FirebaseNotConfigured />;
+  }
 
   const value = { user, loading, signInWithGoogle, signUpWithEmail, signInWithEmail, logout };
 
