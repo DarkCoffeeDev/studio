@@ -3,11 +3,11 @@
 import { useEffect, useState } from 'react';
 import type { Message, SensorData } from '@/lib/types';
 import { useLanguage } from '@/context/language-context';
-import { Header } from './header';
 import { SensorDisplay } from './sensor-display';
 import { QuickActions } from './quick-actions';
 import { ChatInterface } from './chat-interface';
 import { handleUserCommand } from '@/app/actions';
+import { useAuth } from '@/context/auth-context';
 
 const initialSensorData: SensorData = {
   humidity: 62,
@@ -17,6 +17,7 @@ const initialSensorData: SensorData = {
 
 export function ClemmontDashboard() {
   const { t, language } = useLanguage();
+  const { user } = useAuth();
   const [messages, setMessages] = useState<Message[]>([]);
   const [sensorData, setSensorData] = useState<SensorData>(initialSensorData);
   const [isLoading, setIsLoading] = useState(false);
@@ -30,7 +31,7 @@ export function ClemmontDashboard() {
         timestamp: new Date(),
       },
     ]);
-  }, [t]);
+  }, [t, user]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -79,9 +80,8 @@ export function ClemmontDashboard() {
   };
 
   return (
-    <div className="flex flex-col h-full bg-background">
-      <Header />
-      <main className="flex-grow p-4 md:p-8 overflow-hidden">
+    <div className="flex flex-col h-full bg-transparent">
+      <main className="flex-grow p-4 md:p-8 overflow-hidden h-full">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 h-full">
           <div className="lg:col-span-1 space-y-8 flex flex-col">
             <QuickActions onAction={sendMessage} />
