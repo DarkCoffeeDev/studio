@@ -1,3 +1,10 @@
+import { ClemmontDashboard } from '@/components/clemmont/dashboard';
+import { LanguageProvider } from '@/context/language-context';
+
 export default function Home() {
-  return <></>;
+  return (
+    <LanguageProvider>
+      <ClemmontDashboard />
+    </LanguageProvider>
+  );
 }

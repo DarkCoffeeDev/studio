@@ -1,0 +1,43 @@
+export const translations = {
+  en: {
+    title: "Clemmont Irrigation Agent",
+    quickActions: "Quick Actions",
+    waterNow: "Water Now",
+    checkStatus: "Check Status",
+    sensors: "Real-time Sensors",
+    humidity: "Humidity",
+    waterLevel: "Water Level",
+    temperature: "Temperature",
+    chatTitle: "Chat with Clemmont",
+    chatPlaceholder: "e.g., Water the plants for 5 minutes",
+    send: "Send",
+    language: "Language",
+    english: "English",
+    spanish: "Spanish",
+    initialMessage: "Hello! How can I help you with your garden today?",
+    quickActionWater: "Water the plants now",
+    quickActionStatus: "Check system status",
+  },
+  es: {
+    title: "Agente de Riego Clemmont",
+    quickActions: "Acciones Rápidas",
+    waterNow: "Regar Ahora",
+    checkStatus: "Verificar Estado",
+    sensors: "Sensores en Tiempo Real",
+    humidity: "Humedad",
+    waterLevel: "Nivel de Agua",
+    temperature: "Temperatura",
+    chatTitle: "Chatea con Clemmont",
+    chatPlaceholder: "ej. Regar las plantas por 5 minutos",
+    send: "Enviar",
+    language: "Idioma",
+    english: "Inglés",
+    spanish: "Español",
+    initialMessage: "¡Hola! ¿Cómo puedo ayudarte con tu jardín hoy?",
+    quickActionWater: "Regar las plantas ahora",
+    quickActionStatus: "Verificar el estado del sistema",
+  },
+};
+
+export type Language = keyof typeof translations;
+export type Translations = typeof translations.en;
