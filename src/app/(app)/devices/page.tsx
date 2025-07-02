@@ -4,8 +4,6 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { collection, addDoc, serverTimestamp, onSnapshot, query } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
 import { useAuth } from '@/context/auth-context';
 import { useLanguage } from '@/context/language-context';
 import { Button } from '@/components/ui/button';
@@ -21,6 +19,15 @@ const addDeviceSchema = z.object({
   id: z.string().min(1, 'Device ID is required.'),
   name: z.string().min(1, 'Device name is required.'),
 });
+
+// Mock function to generate device data
+function generateMockDevices(): Device[] {
+  return [
+    {id: 'mock-device-1', name: 'Front Yard', createdAt: {seconds: Date.now()/1000 - 3600, nanoseconds: 0}},
+    {id: 'mock-device-2', name: 'Backyard Garden', createdAt: {seconds: Date.now()/1000 - 7200, nanoseconds: 0}},
+    {id: 'mock-device-3', name: 'Flower Beds', createdAt: {seconds: Date.now()/1000 - 10800, nanoseconds: 0}},
+  ];
+}
 
 function DeviceCard({ device }: { device: Device }) {
     return (
@@ -58,40 +65,33 @@ export default function DevicesPage() {
   });
 
   useEffect(() => {
-    if (!user) return;
-
-    // In a real app, you'd fetch from Firestore.
-    // This is a mock implementation.
-    const devicesCollection = collection(db, `users/${user.uid}/devices`);
-    const q = query(devicesCollection);
-    
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        const userDevices: Device[] = [];
-        querySnapshot.forEach((doc) => {
-            userDevices.push({ ...doc.data(), id: doc.id } as Device);
-        });
-        setDevices(userDevices);
-        setLoading(false);
-    }, (error) => {
-        console.error("Error fetching devices: ", error);
-        // Fallback to mock data on error for demonstration
-        setDevices([
-          {id: 'esp32-mock-1', name: 'Front Yard', createdAt: {seconds: Date.now()/1000, nanoseconds: 0}},
-          {id: 'esp32-mock-2', name: 'Vegetable Patch', createdAt: {seconds: Date.now()/1000, nanoseconds: 0}},
-        ]);
-        setLoading(false);
-    });
-
-    return () => unsubscribe();
+    // If Firebase were active, this would fetch from Firestore.
+    // For now, we use mock data.
+    setLoading(true);
+    setTimeout(() => { // Simulate async data fetching
+      setDevices(generateMockDevices());
+      setLoading(false);
+    }, 1000);
   }, [user]);
 
   const onSubmit = async (values: z.infer<typeof addDeviceSchema>) => {
-    if (!user) return;
+    if (!user) {
+        toast({
+            title: t.deviceLinkedError,
+            description: "You must be logged in to link a device.",
+            variant: 'destructive',
+        });
+        return;
+    };
     try {
-      await addDoc(collection(db, `users/${user.uid}/devices`), {
-        ...values,
-        createdAt: serverTimestamp(),
-      });
+      // Simulate adding a device to a database
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+      const newDevice: Device = {
+        id: values.id,
+        name: values.name,
+        createdAt: { seconds: Date.now() / 1000, nanoseconds: 0 },
+      };
+      setDevices((prev) => [...prev, newDevice]); // Add to mock state
       toast({ title: t.deviceLinkedSuccess });
       form.reset();
     } catch (error) {

@@ -5,8 +5,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useAuth } from '@/context/auth-context';
 import { useLanguage } from '@/context/language-context';
 import type { Device, SensorData } from '@/lib/types';
-import { collection, onSnapshot, query, orderBy, limit } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
 import { BarChart, Bar, ResponsiveContainer, XAxis, YAxis, Tooltip, Legend, CartesianGrid, LineChart, Line } from 'recharts';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -23,6 +21,15 @@ function generateMockSensorData() {
     });
   }
   return data;
+}
+
+// Mock function to generate device data (copied from devices page for consistency)
+function generateMockDevicesForStatus(): Device[] {
+  return [
+    {id: 'mock-device-1', name: 'Front Yard', createdAt: {seconds: Date.now()/1000 - 3600, nanoseconds: 0}},
+    {id: 'mock-device-2', name: 'Backyard Garden', createdAt: {seconds: Date.now()/1000 - 7200, nanoseconds: 0}},
+    {id: 'mock-device-3', name: 'Flower Beds', createdAt: {seconds: Date.now()/1000 - 10800, nanoseconds: 0}},
+  ];
 }
 
 const ChartCard = ({ title, data, dataKey, color, unit }: { title: string, data: any[], dataKey: string, color: string, unit: string }) => {
@@ -65,27 +72,14 @@ export default function StatusPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) return;
-    const devicesCollection = collection(db, `users/${user.uid}/devices`);
-    const q = query(devicesCollection);
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const userDevices: Device[] = [];
-      querySnapshot.forEach((doc) => {
-        userDevices.push({ ...doc.data(), id: doc.id } as Device);
-      });
-      setDevices(userDevices);
-      if (userDevices.length > 0 && !selectedDeviceId) {
-        setSelectedDeviceId(userDevices[0].id);
-      }
-      setLoading(false);
-    }, (error) => {
-      console.error("Error fetching devices:", error);
-      const mockDevices = [{id: 'esp32-mock-1', name: 'Front Yard', createdAt: {seconds: Date.now()/1000, nanoseconds: 0}}];
-      setDevices(mockDevices);
+    // In a real app, this would fetch from Firestore. Using mock data for now.
+    const mockDevices = generateMockDevicesForStatus();
+    setDevices(mockDevices);
+    if (mockDevices.length > 0 && !selectedDeviceId) {
       setSelectedDeviceId(mockDevices[0].id);
-      setLoading(false);
-    });
-    return () => unsubscribe();
+    }
+    setLoading(false);
+    
   }, [user, selectedDeviceId]);
 
   useEffect(() => {
@@ -95,9 +89,6 @@ export default function StatusPage() {
     }
     setLoading(true);
     // In a real app, this would fetch from Firestore. Using mock data for now.
-    // const sensorCollection = collection(db, `users/${user.uid}/devices/${selectedDeviceId}/sensors`);
-    // const q = query(sensorCollection, orderBy('timestamp', 'desc'), limit(24));
-    // const unsubscribe = onSnapshot(q, ...);
     const mockData = generateMockSensorData();
     setSensorData(mockData);
     setLoading(false);

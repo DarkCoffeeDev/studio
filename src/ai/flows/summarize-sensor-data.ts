@@ -8,7 +8,6 @@
  * - SummarizeSensorDataOutput - The return type for the summarizeSensorData function.
  */
 
-import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const SummarizeSensorDataInputSchema = z.object({
@@ -25,33 +24,5 @@ const SummarizeSensorDataOutputSchema = z.object({
 export type SummarizeSensorDataOutput = z.infer<typeof SummarizeSensorDataOutputSchema>;
 
 export async function summarizeSensorData(input: SummarizeSensorDataInput): Promise<SummarizeSensorDataOutput> {
-  return summarizeSensorDataFlow(input);
+  return {summary: 'No summary available in mock mode.'};
 }
-
-const prompt = ai.definePrompt({
-  name: 'summarizeSensorDataPrompt',
-  input: {schema: SummarizeSensorDataInputSchema},
-  output: {schema: SummarizeSensorDataOutputSchema},
-  prompt: `You are an AI assistant that provides summaries of recent sensor data for a gardening application.
-
-  Here's the recent sensor data:
-  Timestamp: {{{timestamp}}}
-  Humidity: {{{humidity}}}%
-  Water Level: {{{waterLevel}}} liters
-  Temperature: {{{temperature}}}°C
-
-  Provide a concise summary (one sentence) of the sensor data, highlighting the key conditions of the plants and soil. Focus on whether conditions are optimal, too dry, or too wet.
-  `,
-});
-
-const summarizeSensorDataFlow = ai.defineFlow(
-  {
-    name: 'summarizeSensorDataFlow',
-    inputSchema: SummarizeSensorDataInputSchema,
-    outputSchema: SummarizeSensorDataOutputSchema,
-  },
-  async input => {
-    const {output} = await prompt(input);
-    return output!;
-  }
-);

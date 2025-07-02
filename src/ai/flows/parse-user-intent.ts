@@ -9,7 +9,6 @@
  * - ParseUserIntentOutput - The return type for the parseUserIntent function.
  */
 
-import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const ParseUserIntentInputSchema = z.object({
@@ -38,36 +37,8 @@ const ParseUserIntentOutputSchema = z.object({
 export type ParseUserIntentOutput = z.infer<typeof ParseUserIntentOutputSchema>;
 
 export async function parseUserIntent(input: ParseUserIntentInput): Promise<ParseUserIntentOutput> {
-  return parseUserIntentFlow(input);
+  return {
+    intent: 'check_status',
+    parameters: {},
+  };
 }
-
-const parseUserIntentPrompt = ai.definePrompt({
-  name: 'parseUserIntentPrompt',
-  input: {schema: ParseUserIntentInputSchema},
-  output: {schema: ParseUserIntentOutputSchema},
-  prompt: `You are a natural language understanding agent for an irrigation system.
-  Your task is to parse the user's input and extract the intent and parameters.
-
-  The intent should be one of the following: water_plants, check_status.
-
-  The parameters should be a JSON object containing the parameters for the command.
-
-  For example, if the user says "water the plants for 10 minutes", the intent should be "water_plants" and the parameters should be { "duration": 10 }.
-  If the user says "check the status of the system", the intent should be "check_status" and the parameters should be {}.
-
-  User Input: {{{userInput}}}
-
-  Intent and Parameters:`, // The prompt should guide the model to extract intent and parameters in JSON format.
-});
-
-const parseUserIntentFlow = ai.defineFlow(
-  {
-    name: 'parseUserIntentFlow',
-    inputSchema: ParseUserIntentInputSchema,
-    outputSchema: ParseUserIntentOutputSchema,
-  },
-  async input => {
-    const {output} = await parseUserIntentPrompt(input);
-    return output!;
-  }
-);
