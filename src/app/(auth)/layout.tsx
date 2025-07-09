@@ -1,26 +1,18 @@
-// src/app/layout.tsx
-"use client"; // Muy importante que sea un cliente aquí
+// src/app/(auth)/layout.tsx
+"use client"; // Mantiene el layout como componente cliente
 
-import { AuthProvider } from '@/context/auth-context';
-import { LanguageProvider } from '@/context/language-context';
-import { Toaster } from '@/components/ui/toaster';
-import "./globals.css"; // Asegúrate de que esta línea esté, es tu CSS principal.
+import "@/app/globals.css"; // ¡IMPORTACIÓN CORREGIDA!
 
-export default function RootLayout({
+export default function AuthLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body>
-        <LanguageProvider>
-          <AuthProvider>
-            {children}
-          </AuthProvider>
-        </LanguageProvider>
-        <Toaster />
-      </body>
-    </html>
+    <div className="flex min-h-screen w-full bg-gradient-to-br from-blue-100 to-blue-300 dark:from-slate-900 dark:to-slate-800">
+      <div className="flex flex-1 items-center justify-center p-4 md:p-8">
+        {children}
+      </div>
+    </div>
   );
 }
