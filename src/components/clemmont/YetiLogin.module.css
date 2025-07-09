@@ -1,80 +1,309 @@
+/* src/components/clemmont/YetiLogin.module.css */
+
+/* Variables de color adaptadas de SCSS a CSS */
+:root {
+  --darkBlue: #217093;
+  --medBlue: #4eb8dd;
+  --lightBlue: #ddf1fa;
+  --inputBG: #f3fafd;
+}
+
+/* Modo oscuro */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --darkBlue: #1a5c7a; /* Un poco más oscuro para el modo oscuro */
+    --medBlue: #3a9cc2; /* Un poco más oscuro */
+    --lightBlue: #a9ddf3; /* Un poco más oscuro */
+    --inputBG: #1e293b; /* Fondo de input oscuro */
+  }
+}
+
 .yetiForm {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: transparent;
+  background-color: var(--background); /* Usa la variable de Tailwind para el fondo */
   width: 100%;
-  max-width: 350px;
+  max-width: 400px;
   margin: 0 auto;
-  padding: 2rem 1.5rem 1.5rem 1.5rem;
-  border-radius: 1.5rem;
+  padding: 2.25em;
+  box-sizing: border-box;
+  border: solid 1px var(--border); /* Usa la variable de Tailwind para el borde */
+  border-radius: 0.5em;
+  font-family: 'Source Sans Pro', sans-serif; /* Fuente del diseño original */
   box-shadow: 0 4px 32px 0 rgba(0,0,0,0.10);
+  transition: background-color 0.3s ease; /* Transición para modo oscuro */
 }
+
+/* Ajustes para el modo oscuro del formulario */
+@media (prefers-color-scheme: dark) {
+  .yetiForm {
+    background-color: var(--card); /* Usa la variable de Tailwind para el fondo de la tarjeta en modo oscuro */
+    box-shadow: 0 4px 32px 0 rgba(0,0,0,0.25);
+  }
+}
+
 .svgContainer {
-  width: 220px;
-  margin-bottom: 1.5rem;
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin: 0 auto 1em;
+  border-radius: 50%;
+  pointer-events: none;
 }
+.svgContainer div {
+  position: relative;
+  width: 100%;
+  height: 0;
+  overflow: hidden;
+  border-radius: 50%;
+  padding-bottom: 100%;
+}
+.svgContainer .mySVG {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.svgContainer:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: inherit;
+  height: inherit;
+  box-sizing: border-box;
+  border: solid 2.5px var(--darkBlue);
+  border-radius: 50%;
+}
+
+/* Colores SVG para modo oscuro */
+@media (prefers-color-scheme: dark) {
+  .svgContainer circle[fill="#a9ddf3"] { fill: #617e92; } /* Fondo del círculo principal */
+  .svgContainer circle[fill="#DDF1FA"] { fill: #4a667a; } /* Cara y orejas */
+  .svgContainer path[fill="#DDF1FA"] { fill: #4a667a; } /* Cara y orejas */
+  .svgContainer path[stroke="#3A5E77"] { stroke: #88a9c0; } /* Bordes del cuerpo y cara */
+  .svgContainer circle[fill="#3a5e77"] { fill: #a9ddf3; } /* Ojos */
+  .svgContainer path[fill="#3a5e77"] { fill: #a9ddf3; } /* Nariz */
+  .svgContainer path[fill="#617E92"] { fill: #88a9c0; } /* Fondo de la boca */
+  .svgContainer path[fill="#cc4a6c"] { fill: #e96d8a; } /* Lengua */
+  .svgContainer path[fill="#FFFFFF"] { fill: #334155; } /* Pelo, dientes, etc. */
+}
+
+
 .inputGroup {
   width: 100%;
-  margin-bottom: 1rem;
+  margin: 0 0 2em;
+  padding: 0;
+  position: relative;
   display: flex;
   flex-direction: column;
 }
-.inputGroup3 {
-  /* submit */
-  margin-top: 0.5rem;
+.inputGroup:last-of-type {
+  margin-bottom: 0;
 }
-.inputGroup4 {
-  /* google */
+.inputGroupError {
+  color: var(--destructive); /* Usa la variable de Tailwind */
+  font-size: 0.95rem;
   margin-bottom: 0.5rem;
 }
 .inputGroupSwitch {
   text-align: center;
   font-size: 0.95rem;
-  color: var(--muted-foreground, #64748b);
+  color: var(--muted-foreground); /* Usa la variable de Tailwind */
 }
-.inputGroupError {
-  color: #ef4444;
-  font-size: 0.95rem;
-  margin-bottom: 0.5rem;
-}
+
 .yetiForm input[type="email"],
 .yetiForm input[type="password"],
 .yetiForm input[type="text"] {
-  border: 1px solid #cbd5e1;
-  border-radius: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  font-size: 1rem;
-  background: var(--input-bg, #fff);
-  color: var(--input-fg, #22223b);
-  margin-top: 0.25rem;
-  outline: none;
-  transition: border 0.2s;
-}
-.yetiForm input:focus {
-  border: 1.5px solid #38bdf8;
-}
-.yetiForm label {
-  font-size: 0.98rem;
-  font-weight: 500;
-  color: var(--label-fg, #334155);
-}
-.yetiForm button[type="submit"] {
-  background: linear-gradient(90deg, #38bdf8 0%, #0ea5e9 100%);
-  color: #fff;
-  border: none;
-  border-radius: 0.5rem;
-  padding: 0.6rem 0;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
+  display: block;
+  margin: 0;
+  padding: 0.875em 1em 0;
+  background-color: var(--inputBG);
+  border: solid 2px var(--darkBlue);
+  border-radius: 4px;
+  -webkit-appearance: none;
+  box-sizing: border-box;
   width: 100%;
-  transition: background 0.2s;
+  height: 65px;
+  font-size: 1.55em;
+  color: #353538; /* Color de texto del input */
+  font-weight: 600;
+  font-family: inherit;
+  transition: box-shadow 0.2s linear, border-color 0.25s ease-out, background-color 0.3s ease, color 0.3s ease;
+  outline: none;
+}
+.yetiForm input[type="email"]:focus,
+.yetiForm input[type="password"]:focus,
+.yetiForm input[type="text"]:focus {
+  outline: none;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  border: solid 2px var(--medBlue);
+}
+/* Colores de input para modo oscuro */
+@media (prefers-color-scheme: dark) {
+  .yetiForm input[type="email"],
+  .yetiForm input[type="password"],
+  .yetiForm input[type="text"] {
+    background-color: var(--input); /* Usa la variable de Tailwind */
+    color: var(--foreground); /* Usa la variable de Tailwind */
+    border-color: var(--border); /* Usa la variable de Tailwind */
+  }
+  .yetiForm input[type="email"]:focus,
+  .yetiForm input[type="password"]:focus,
+  .yetiForm input[type="text"]:focus {
+    border-color: var(--ring); /* Usa la variable de Tailwind */
+  }
+}
+
+
+.yetiForm label {
+  margin: 0 0 12px;
+  display: block;
+  font-size: 1.25em;
+  color: var(--darkBlue);
+  font-weight: 700;
+  font-family: inherit;
+  transition: color 0.3s ease; /* Transición para modo oscuro */
+}
+/* Color de label para modo oscuro */
+@media (prefers-color-scheme: dark) {
+  .yetiForm label {
+    color: var(--foreground); /* Usa la variable de Tailwind */
+  }
+}
+
+
+.yetiForm button[type="submit"] {
+  display: block;
+  margin: 0;
+  padding: 0.65em 1em 1em;
+  background-color: var(--medBlue);
+  border: none;
+  border-radius: 4px;
+  box-sizing: border-box;
+  box-shadow: none;
+  width: 100%;
+  height: 65px;
+  font-size: 1.55em;
+  color: #FFF;
+  font-weight: 600;
+  font-family: inherit;
+  transition: background-color 0.2s ease-out;
+  cursor: pointer;
+}
+.yetiForm button[type="submit"]:hover,
+.yetiForm button[type="submit"]:active {
+  background-color: var(--darkBlue);
 }
 .yetiForm button[type="submit"][disabled] {
   opacity: 0.7;
   cursor: not-allowed;
 }
+
+.helper {
+  position: absolute;
+  z-index: 1;
+  font-family: inherit;
+}
+.helper1 {
+  top: 0;
+  left: 0;
+  transform: translate(1em, 2.2em) scale(1);
+  transform-origin: 0 0;
+  color: var(--darkBlue);
+  font-size: 1.55em;
+  font-weight: 400;
+  opacity: 0.65;
+  pointer-events: none;
+  transition: transform 0.2s ease-out, opacity 0.2s linear, color 0.3s ease;
+}
+.inputGroup1.focusWithText .helper {
+  transform: translate(1em, 1.55em) scale(0.6);
+  opacity: 1;
+}
+/* Color del helper para modo oscuro */
+@media (prefers-color-scheme: dark) {
+  .helper1 {
+    color: var(--muted-foreground);
+  }
+}
+
+
+.inputGroup2 input[type="password"] {
+  padding: 0.4em 1em 0.5em;
+}
+.inputGroup2 input[type="text"] {
+  padding: 0.025em 1em 0;
+}
+.inputGroup2 #showPasswordToggle {
+  display: block;
+  padding: 0 0 0 1.45em;
+  position: absolute;
+  top: 0.25em;
+  right: 0;
+  font-size: 1em;
+}
+.inputGroup2 #showPasswordToggle input {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+.inputGroup2 #showPasswordToggle .indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 0.85em;
+  width: 0.85em;
+  background-color: var(--inputBG);
+  border: solid 2px var(--darkBlue);
+  border-radius: 3px;
+  transition: border-color 0.2s ease-out, background-color 0.3s ease;
+}
+.inputGroup2 #showPasswordToggle .indicator:after {
+  content: "";
+  position: absolute;
+  left: 0.25em;
+  top: 0.025em;
+  width: 0.2em;
+  height: 0.5em;
+  border: solid var(--darkBlue);
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+  visibility: hidden;
+}
+.inputGroup2 #showPasswordToggle input:checked ~ .indicator:after {
+  visibility: visible;
+}
+.inputGroup2 #showPasswordToggle input:focus ~ .indicator,
+.inputGroup2 #showPasswordToggle input:hover ~ .indicator {
+  border-color: var(--medBlue);
+}
+.inputGroup2 #showPasswordToggle input:disabled ~ .indicator {
+  opacity: 0.5;
+}
+.inputGroup2 #showPasswordToggle input:disabled ~ .indicator:after {
+  visibility: hidden;
+}
+/* Estilos de indicador para modo oscuro */
+@media (prefers-color-scheme: dark) {
+  .inputGroup2 #showPasswordToggle .indicator {
+    background-color: var(--input);
+    border-color: var(--border);
+  }
+  .inputGroup2 #showPasswordToggle .indicator:after {
+    border-color: var(--foreground);
+  }
+  .inputGroup2 #showPasswordToggle input:focus ~ .indicator,
+  .inputGroup2 #showPasswordToggle input:hover ~ .indicator {
+    border-color: var(--ring);
+  }
+}
+
+
 .googleBtn {
   background: #fff;
   color: #22223b;
@@ -89,7 +318,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  transition: background 0.2s;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
 }
 .googleBtn:active {
   background: #f1f5f9;
@@ -100,19 +329,19 @@
   background: url('https://www.svgrepo.com/show/475656/google-color.svg') no-repeat center/contain;
   display: inline-block;
 }
-.helper1 {
-  font-size: 0.85rem;
-  color: #64748b;
-  margin-top: 0.1rem;
+/* Estilos de botón de Google para modo oscuro */
+@media (prefers-color-scheme: dark) {
+  .googleBtn {
+    background: var(--input); /* Usa la variable de Tailwind */
+    color: var(--foreground); /* Usa la variable de Tailwind */
+    border-color: var(--border); /* Usa la variable de Tailwind */
+  }
+  .googleBtn:active {
+    background: var(--muted); /* Usa la variable de Tailwind */
+  }
 }
-.indicator {
-  display: inline-block;
-  width: 1.1em;
-  height: 1.1em;
-  border-radius: 50%;
-  background: #cbd5e1;
-  margin-left: 0.5em;
-}
+
+/* Responsive Styles (Mobile Adaptation) */
 @media (max-width: 500px) {
   .svgContainer {
     width: 100%;
@@ -122,25 +351,5 @@
   .yetiForm {
     padding: 1rem 0.5rem;
     max-width: 98vw;
-  }
-}
-@media (prefers-color-scheme: dark) {
-  .yetiForm {
-    box-shadow: 0 4px 32px 0 rgba(0,0,0,0.25);
-  }
-  .yetiForm input[type="email"],
-  .yetiForm input[type="password"],
-  .yetiForm input[type="text"] {
-    background: #1e293b;
-    color: #f1f5f9;
-    border: 1px solid #334155;
-  }
-  .yetiForm label {
-    color: #f1f5f9;
-  }
-  .googleBtn {
-    background: #1e293b;
-    color: #f1f5f9;
-    border: 1px solid #334155;
   }
 }
