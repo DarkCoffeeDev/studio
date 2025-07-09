@@ -1,7 +1,7 @@
 // src/app/(auth)/layout.tsx
-"use client"; // Mantiene el layout como componente cliente
+"use client";
 
-import "@/app/globals.css"; // ¡IMPORTACIÓN CORREGIDA!
+import "@/app/globals.css"; // La importación corregida a ruta absoluta
 
 export default function AuthLayout({
   children,
