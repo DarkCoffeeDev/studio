@@ -37,6 +37,12 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Variables de color de Yeti añadidas globalmente */
+    --yeti-darkBlue: #217093;
+    --yeti-medBlue: #4eb8dd;
+    --yeti-lightBlue: #ddf1fa;
+    --yeti-inputBG: #f3fafd;
   }
   .dark {
     --background: 240 10% 3.9%;
@@ -71,6 +77,12 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Variables de color de Yeti para modo oscuro */
+    --yeti-darkBlue: #1a5c7a;
+    --yeti-medBlue: #3a9cc2;
+    --yeti-lightBlue: #a9ddf3;
+    --yeti-inputBG: #1e293b;
   }
 }
 

@@ -1,23 +1,5 @@
 /* src/components/clemmont/YetiLogin.module.css */
 
-/* Variables de color adaptadas de SCSS a CSS */
-:root {
-  --darkBlue: #217093;
-  --medBlue: #4eb8dd;
-  --lightBlue: #ddf1fa;
-  --inputBG: #f3fafd;
-}
-
-/* Modo oscuro */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --darkBlue: #1a5c7a; /* Un poco más oscuro para el modo oscuro */
-    --medBlue: #3a9cc2; /* Un poco más oscuro */
-    --lightBlue: #a9ddf3; /* Un poco más oscuro */
-    --inputBG: #1e293b; /* Fondo de input oscuro */
-  }
-}
-
 .yetiForm {
   display: flex;
   flex-direction: column;
@@ -30,9 +12,9 @@
   box-sizing: border-box;
   border: solid 1px var(--border); /* Usa la variable de Tailwind para el borde */
   border-radius: 0.5em;
-  font-family: 'Source Sans Pro', sans-serif; /* Fuente del diseño original */
+  font-family: 'Source Sans Pro', sans-serif;
   box-shadow: 0 4px 32px 0 rgba(0,0,0,0.10);
-  transition: background-color 0.3s ease; /* Transición para modo oscuro */
+  transition: background-color 0.3s ease;
 }
 
 /* Ajustes para el modo oscuro del formulario */
@@ -76,21 +58,21 @@
   width: inherit;
   height: inherit;
   box-sizing: border-box;
-  border: solid 2.5px var(--darkBlue);
+  border: solid 2.5px var(--yeti-darkBlue); /* Usa la variable global */
   border-radius: 50%;
 }
 
 /* Colores SVG para modo oscuro */
 @media (prefers-color-scheme: dark) {
-  .svgContainer circle[fill="#a9ddf3"] { fill: #617e92; } /* Fondo del círculo principal */
-  .svgContainer circle[fill="#DDF1FA"] { fill: #4a667a; } /* Cara y orejas */
-  .svgContainer path[fill="#DDF1FA"] { fill: #4a667a; } /* Cara y orejas */
-  .svgContainer path[stroke="#3A5E77"] { stroke: #88a9c0; } /* Bordes del cuerpo y cara */
-  .svgContainer circle[fill="#3a5e77"] { fill: #a9ddf3; } /* Ojos */
-  .svgContainer path[fill="#3a5e77"] { fill: #a9ddf3; } /* Nariz */
-  .svgContainer path[fill="#617E92"] { fill: #88a9c0; } /* Fondo de la boca */
-  .svgContainer path[fill="#cc4a6c"] { fill: #e96d8a; } /* Lengua */
-  .svgContainer path[fill="#FFFFFF"] { fill: #334155; } /* Pelo, dientes, etc. */
+  .svgContainer circle[fill="#a9ddf3"] { fill: #617e92; }
+  .svgContainer circle[fill="#DDF1FA"] { fill: #4a667a; }
+  .svgContainer path[fill="#DDF1FA"] { fill: #4a667a; }
+  .svgContainer path[stroke="#3A5E77"] { stroke: #88a9c0; }
+  .svgContainer circle[fill="#3a5e77"] { fill: #a9ddf3; }
+  .svgContainer path[fill="#3a5e77"] { fill: #a9ddf3; }
+  .svgContainer path[fill="#617E92"] { fill: #88a9c0; }
+  .svgContainer path[fill="#cc4a6c"] { fill: #e96d8a; }
+  .svgContainer path[fill="#FFFFFF"] { fill: #334155; }
 }
 
 
@@ -105,15 +87,18 @@
 .inputGroup:last-of-type {
   margin-bottom: 0;
 }
+/* No es necesario eliminar estas reglas si no están vacías
+.inputGroup0, .inputGroup1, .inputGroup2, .inputGroup3, .inputGroup4, .inputGroupSwitch { }
+*/
 .inputGroupError {
-  color: var(--destructive); /* Usa la variable de Tailwind */
+  color: var(--destructive);
   font-size: 0.95rem;
   margin-bottom: 0.5rem;
 }
 .inputGroupSwitch {
   text-align: center;
   font-size: 0.95rem;
-  color: var(--muted-foreground); /* Usa la variable de Tailwind */
+  color: var(--muted-foreground);
 }
 
 .yetiForm input[type="email"],
@@ -122,15 +107,16 @@
   display: block;
   margin: 0;
   padding: 0.875em 1em 0;
-  background-color: var(--inputBG);
-  border: solid 2px var(--darkBlue);
+  background-color: var(--yeti-inputBG); /* Usa la variable global */
+  border: solid 2px var(--yeti-darkBlue); /* Usa la variable global */
   border-radius: 4px;
   -webkit-appearance: none;
+  appearance: none; /* Añadido para compatibilidad */
   box-sizing: border-box;
   width: 100%;
   height: 65px;
   font-size: 1.55em;
-  color: #353538; /* Color de texto del input */
+  color: #353538;
   font-weight: 600;
   font-family: inherit;
   transition: box-shadow 0.2s linear, border-color 0.25s ease-out, background-color 0.3s ease, color 0.3s ease;
@@ -141,21 +127,21 @@
 .yetiForm input[type="text"]:focus {
   outline: none;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-  border: solid 2px var(--medBlue);
+  border: solid 2px var(--yeti-medBlue); /* Usa la variable global */
 }
 /* Colores de input para modo oscuro */
 @media (prefers-color-scheme: dark) {
   .yetiForm input[type="email"],
   .yetiForm input[type="password"],
   .yetiForm input[type="text"] {
-    background-color: var(--input); /* Usa la variable de Tailwind */
-    color: var(--foreground); /* Usa la variable de Tailwind */
-    border-color: var(--border); /* Usa la variable de Tailwind */
+    background-color: var(--input);
+    color: var(--foreground);
+    border-color: var(--border);
   }
   .yetiForm input[type="email"]:focus,
   .yetiForm input[type="password"]:focus,
   .yetiForm input[type="text"]:focus {
-    border-color: var(--ring); /* Usa la variable de Tailwind */
+    border-color: var(--ring);
   }
 }
 
@@ -164,15 +150,15 @@
   margin: 0 0 12px;
   display: block;
   font-size: 1.25em;
-  color: var(--darkBlue);
+  color: var(--yeti-darkBlue); /* Usa la variable global */
   font-weight: 700;
   font-family: inherit;
-  transition: color 0.3s ease; /* Transición para modo oscuro */
+  transition: color 0.3s ease;
 }
 /* Color de label para modo oscuro */
 @media (prefers-color-scheme: dark) {
   .yetiForm label {
-    color: var(--foreground); /* Usa la variable de Tailwind */
+    color: var(--foreground);
   }
 }
 
@@ -181,7 +167,7 @@
   display: block;
   margin: 0;
   padding: 0.65em 1em 1em;
-  background-color: var(--medBlue);
+  background-color: var(--yeti-medBlue); /* Usa la variable global */
   border: none;
   border-radius: 4px;
   box-sizing: border-box;
@@ -197,7 +183,7 @@
 }
 .yetiForm button[type="submit"]:hover,
 .yetiForm button[type="submit"]:active {
-  background-color: var(--darkBlue);
+  background-color: var(--yeti-darkBlue); /* Usa la variable global */
 }
 .yetiForm button[type="submit"][disabled] {
   opacity: 0.7;
@@ -214,7 +200,7 @@
   left: 0;
   transform: translate(1em, 2.2em) scale(1);
   transform-origin: 0 0;
-  color: var(--darkBlue);
+  color: var(--yeti-darkBlue); /* Usa la variable global */
   font-size: 1.55em;
   font-weight: 400;
   opacity: 0.65;
@@ -258,8 +244,8 @@
   left: 0;
   height: 0.85em;
   width: 0.85em;
-  background-color: var(--inputBG);
-  border: solid 2px var(--darkBlue);
+  background-color: var(--yeti-inputBG); /* Usa la variable global */
+  border: solid 2px var(--yeti-darkBlue); /* Usa la variable global */
   border-radius: 3px;
   transition: border-color 0.2s ease-out, background-color 0.3s ease;
 }
@@ -270,7 +256,7 @@
   top: 0.025em;
   width: 0.2em;
   height: 0.5em;
-  border: solid var(--darkBlue);
+  border: solid var(--yeti-darkBlue); /* Usa la variable global */
   border-width: 0 3px 3px 0;
   transform: rotate(45deg);
   visibility: hidden;
@@ -280,7 +266,7 @@
 }
 .inputGroup2 #showPasswordToggle input:focus ~ .indicator,
 .inputGroup2 #showPasswordToggle input:hover ~ .indicator {
-  border-color: var(--medBlue);
+  border-color: var(--yeti-medBlue); /* Usa la variable global */
 }
 .inputGroup2 #showPasswordToggle input:disabled ~ .indicator {
   opacity: 0.5;
@@ -332,12 +318,12 @@
 /* Estilos de botón de Google para modo oscuro */
 @media (prefers-color-scheme: dark) {
   .googleBtn {
-    background: var(--input); /* Usa la variable de Tailwind */
-    color: var(--foreground); /* Usa la variable de Tailwind */
-    border-color: var(--border); /* Usa la variable de Tailwind */
+    background: var(--input);
+    color: var(--foreground);
+    border-color: var(--border);
   }
   .googleBtn:active {
-    background: var(--muted); /* Usa la variable de Tailwind */
+    background: var(--muted);
   }
 }
 
