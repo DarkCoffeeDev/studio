@@ -1,131 +1,125 @@
+// src/context/auth-context.tsx
 "use client";
 
-import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
-import type { AppUser } from '@/lib/types';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 
+// Define el tipo para el objeto de usuario (simplificado para el mock)
+interface User {
+  id: string;
+  email: string;
+  username?: string;
+}
+
+// Define el tipo para el contexto de autenticación
 interface AuthContextType {
-  user: AppUser | null;
+  user: User | null;
   loading: boolean;
-  signInWithGoogle: () => Promise<void>;
-  signUpWithEmail: (name: string, email: string, pass: string) => Promise<any>;
-  signInWithEmail: (email: string, pass: string) => Promise<any>;
+  signInWithEmail: (email: string, password: string) => Promise<User | null>;
+  signInWithGoogle: () => Promise<User | null>;
+  signUpWithEmail: (username: string, email: string, password: string) => Promise<User | null>;
   logout: () => Promise<void>;
 }
 
+// Crea el contexto de autenticación
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<AppUser | null>(null);
-  const [loading, setLoading] = useState(false); // No async Firebase call
-  const router = useRouter();
-
-  // Mock user data storage (for demonstration purposes only)
-  const [mockUsers, setMockUsers] = useState<any[]>([]);
+// Componente proveedor de autenticación
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true); // Inicia en true para indicar que estamos cargando el estado de autenticación
 
   useEffect(() => {
-    // Simulate checking local storage for a logged-in user
-    const storedUser = localStorage.getItem('mockUser');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+    // Esto se ejecuta solo en el cliente
+    if (typeof window !== 'undefined') {
+      const storedUser = sessionStorage.getItem('mockUser');
+      if (storedUser) {
+        try {
+          setUser(JSON.parse(storedUser));
+        } catch (e) {
+          console.error("Error parsing stored user:", e);
+          sessionStorage.removeItem('mockUser'); // Limpiar si hay un error de parseo
+        }
+      }
+      setLoading(false); // Una vez que se intenta cargar desde sessionStorage, el loading termina
     }
-    setLoading(false);
   }, []);
 
-  const signInWithGoogle = async () => {
+  // Funciones mock de autenticación
+  const signInWithEmail = async (email: string, password: string): Promise<User | null> => {
     setLoading(true);
+    // Simula una llamada a la API
     await new Promise(resolve => setTimeout(resolve, 500));
-    try {
-        const mockUser = {
-            uid: 'mock-google-user-123',
-            email: 'test@example.com',
-            displayName: 'Test User',
-            photoURL: 'https://placehold.co/40x40/png',
-        };
-        setUser(mockUser);
-        localStorage.setItem('mockUser', JSON.stringify(mockUser));
-        router.push('/dashboard');
-    } catch (error) {
-      console.error("Error during Google sign-in", error);
-    } finally {
-        setLoading(false);
+    if (email === "test@example.com" && password === "password123") {
+      const mockUser: User = { id: "1", email: "test@example.com", username: "TestUser" };
+      setUser(mockUser);
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('mockUser', JSON.stringify(mockUser)); // Guarda en sessionStorage
+      }
+      setLoading(false);
+      return mockUser;
+    } else {
+      setLoading(false);
+      alert("Credenciales incorrectas (mock)");
+      return null;
     }
   };
 
-  const signUpWithEmail = async (name: string, email: string, pass: string) => {
+  const signInWithGoogle = async (): Promise<User | null> => {
     setLoading(true);
     await new Promise(resolve => setTimeout(resolve, 500));
-    try {
-        if (mockUsers.some(u => u.email === email)) {
-            throw { code: 'auth/email-already-in-use' };
-        }
-        const newUser = {
-            uid: `mock-email-user-${Date.now()}`,
-            email,
-            displayName: name,
-            password: pass, // In a real app, never store plain passwords
-            photoURL: '',
-        };
-        setMockUsers(prev => [...prev, newUser]);
-        setUser(newUser);
-        localStorage.setItem('mockUser', JSON.stringify(newUser));
-        router.push('/dashboard');
-        return Promise.resolve(null); // Simulate successful signup
-    } catch (error) {
-        console.error("Error during email sign-up", error);
-        return Promise.reject(error); // Simulate error during signup
-    } finally {
-        setLoading(false);
+    const mockUser: User = { id: "2", email: "google@example.com", username: "GoogleUser" };
+    setUser(mockUser);
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('mockUser', JSON.stringify(mockUser)); // Guarda en sessionStorage
     }
-  }
-
-  const signInWithEmail = async (email: string, pass: string) => {
-    setLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 500));
-    try {
-        const foundUser = mockUsers.find(u => u.email === email && u.password === pass);
-        if (!foundUser) {
-            throw { code: 'auth/invalid-credential' };
-        }
-        setUser(foundUser);
-        localStorage.setItem('mockUser', JSON.stringify(foundUser));
-        router.push('/dashboard');
-        return Promise.resolve(null); // Simulate successful sign-in
-    } catch (error) {
-        console.error("Error during email sign-in", error);
-        return Promise.reject(error); // Simulate error during sign-in
-    } finally {
-        setLoading(false);
-    }
-  }
-
-  const logout = async () => {
-    setLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 500));
-    try {
-      setUser(null);
-      localStorage.removeItem('mockUser');
-      router.push('/login');
-    } catch (error) {
-      console.error("Error signing out", error);
-    } finally {
-        setLoading(false);
-    }
+    setLoading(false);
+    return mockUser;
   };
 
-  const value = { user, loading, signInWithGoogle, signUpWithEmail, signInWithEmail, logout };
+  const signUpWithEmail = async (username: string, email: string, password: string): Promise<User | null> => {
+    setLoading(true);
+    await new Promise(resolve => setTimeout(resolve, 500));
+    const mockUser: User = { id: "3", email: email, username: username };
+    setUser(mockUser);
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('mockUser', JSON.stringify(mockUser)); // Guarda en sessionStorage
+    }
+    setLoading(false);
+    return mockUser;
+  };
+
+  const logout = async (): Promise<void> => {
+    setLoading(true);
+    await new Promise(resolve => setTimeout(resolve, 300));
+    setUser(null);
+    if (typeof window !== 'undefined') {
+      sessionStorage.removeItem('mockUser'); // Elimina de sessionStorage
+    }
+    setLoading(false);
+  };
+
+  const value = {
+    user,
+    loading,
+    signInWithEmail,
+    signInWithGoogle,
+    signUpWithEmail,
+    logout,
+  };
 
   return (
     <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );
-};
+}
 
-export const useAuth = (): AuthContextType => {
+// Hook personalizado para usar el contexto de autenticación
+export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
-};
+}

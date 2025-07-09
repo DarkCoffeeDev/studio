@@ -44,8 +44,7 @@ export default function AppLayoutContent({
     setIsClient(true);
   }, []);
 
-  const { user, loading } = useAuth(); // Siempre llamar useAuth, pero manejar el estado de carga/no-cliente
-
+  const { user, loading } = useAuth();
   const { t } = useLanguage();
 
   const router = useRouter();
@@ -59,17 +58,13 @@ export default function AppLayoutContent({
   }, [user, loading, router, isClient]);
 
   // Mostrar el skeleton si no estamos en el cliente O si el estado de autenticación está cargando
-  if (!isClient || loading) { // <--- CAMBIO CLAVE AQUÍ
+  if (!isClient || loading) {
     return <AppSkeleton />;
   }
 
   // Si no hay usuario y no estamos cargando, significa que la redirección a /login debe ocurrir
-  // y no debemos renderizar el contenido de la aplicación.
-  // Esta condición ya está cubierta por el useEffect que redirige.
-  // Sin embargo, para evitar un render momentáneo de UI sin usuario,
-  // podemos añadir una comprobación aquí también, aunque el useEffect debería ser rápido.
   if (!user) {
-      return null; // O un esqueleto si la redirección es muy rápida y causa un flicker
+      return null; // No renderizar nada si el usuario no está autenticado y se está redirigiendo
   }
 
   const navItems = [
