@@ -1,3 +1,4 @@
+// src/components/clemmont/YetiLogin.tsx
 "use client"; // Necesario para componentes interactivos en Next.js App Router
 
 import React, { useRef, useState, useEffect, useCallback } from 'react';
