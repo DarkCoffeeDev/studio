@@ -1,4 +1,3 @@
-// src/components/clemmont/YetiLogin.tsx
 "use client"; // Necesario para componentes interactivos en Next.js App Router
 
 import React, { useRef, useState, useEffect, useCallback } from 'react';
@@ -77,13 +76,13 @@ const YetiLogin: React.FC<YetiLoginProps> = ({
   const faceControls = useAnimation();
   const hairControls = useAnimation();
   const bodyBGControls = useAnimation();
-  const outerEarLControls = useAnimation(); // <--- Faltaba esta declaración
-  const outerEarRControls = useAnimation(); // <--- Faltaba esta declaración
-  const earHairLControls = useAnimation();  // <--- Faltaba esta declaración
-  const earHairRControls = useAnimation();  // <--- Faltaba esta declaración
+  const outerEarLControls = useAnimation();
+  const outerEarRControls = useAnimation();
+  const earHairLControls = useAnimation();
+  const earHairRControls = useAnimation();
 
 
-  // Refs para los elementos SVG
+  // Refs para los elementos SVG y inputs
   const svgContainerRef = useRef<HTMLDivElement>(null); // Para calcular posiciones relativas
   const emailInputRef = useRef<HTMLInputElement>(null); // Para el input de email
 
@@ -97,20 +96,16 @@ const YetiLogin: React.FC<YetiLoginProps> = ({
 
   // Manejar el foco del campo de contraseña para animar los brazos
   const handlePasswordFocus = useCallback(async () => {
-    // Animar brazos para cubrir ojos
     await armLControls.start("visible");
     await armRControls.start("visible");
-    // Animar bodyBG
     bodyBGControls.start({ pathLength: 1, transition: { duration: 0.45, ease: "easeOut" } });
 
   }, [armLControls, armRControls, bodyBGControls]);
 
   const handlePasswordBlur = useCallback(async () => {
-    if (!showPassword) { // Solo si la contraseña no está visible
-      // Animar brazos para descubrir ojos
+    if (!showPassword) {
       await armLControls.start("hidden");
       await armRControls.start("hidden");
-      // Animar bodyBG de vuelta
       bodyBGControls.start({ pathLength: 0, transition: { duration: 0.45, ease: "easeOut" } });
     }
   }, [armLControls, armRControls, bodyBGControls, showPassword]);
@@ -149,41 +144,15 @@ const YetiLogin: React.FC<YetiLoginProps> = ({
       const inputRect = emailInput.getBoundingClientRect();
       const svgRect = svgContainer.getBoundingClientRect();
 
-      // Calcular la posición del caret (aproximada, más compleja para precisión exacta)
-      // Para una precisión "exacta" como el original, se necesitaría un helper para el caret
-      // Aquí, usaremos la posición del ratón para simular el seguimiento
       const targetX = event.clientX;
       const targetY = event.clientY;
 
-      // Coordenadas centrales de los ojos en el SVG (aproximadas)
-      const eyeL_cX = 85.5;
-      const eyeL_cY = 78.5;
-      const eyeR_cX = 114.5;
-      const eyeR_cY = 78.5;
-      const nose_cX = 97;
-      const nose_cY = 81;
-      const mouth_cX = 100;
-      const mouth_cY = 100;
-      const chin_cX = 100;
-      const chin_cY = 125; // Aproximado
-      const face_cX = 100;
-      const face_cY = 80; // Aproximado
-      const eyebrow_cX = 100;
-      const eyebrow_cY = 58; // Aproximado
-      const outerEar_cX = 47; // Para el izquierdo
-      const outerEar_cY = 83; // Para el izquierdo
-      const hair_cX = 100;
-      const hair_cY = 40; // Aproximado
-
-      // Calcular el centro del SVG en coordenadas de la ventana
       const svgWindowCenterX = svgRect.left + svgRect.width / 2;
       const svgWindowCenterY = svgRect.top + svgRect.height / 2;
 
-      // Calcular la diferencia entre el objetivo y el centro del SVG
       const diffX = targetX - svgWindowCenterX;
       const diffY = targetY - svgWindowCenterY;
 
-      // Limitar el movimiento de los elementos (ajusta estos valores para controlar el rango)
       const eyeMoveLimit = 10;
       const noseMoveLimit = 15;
       const mouthMoveLimit = 15;
@@ -203,7 +172,7 @@ const YetiLogin: React.FC<YetiLoginProps> = ({
 
       const chinX = mouthX * 0.8;
       const chinY = mouthY * 0.5;
-      const chinScaleY = 1 - (Math.abs(diffX) * 0.0015); // Simular el "aplastamiento"
+      const chinScaleY = 1 - (Math.abs(diffX) * 0.0015);
 
       const faceX = Math.max(-faceMoveLimit, Math.min(faceMoveLimit, diffX * 0.03));
       const faceY = Math.max(-faceMoveLimit, Math.min(faceMoveLimit, diffY * 0.04));
@@ -217,34 +186,19 @@ const YetiLogin: React.FC<YetiLoginProps> = ({
       const outerEarY = Math.max(-earMoveLimit, Math.min(earMoveLimit, diffY * 0.05));
 
       const hairX = Math.max(-hairMoveLimit, Math.min(hairMoveLimit, diffX * 0.06));
-      const hairScaleY = 1.2; // Hardcoded from original, could be dynamic
+      const hairScaleY = 1.2;
 
-      // Animar ojos
       eyeLControls.start({ x: eyeX, y: eyeY, transition: { duration: 0.5, ease: "easeOut" } });
       eyeRControls.start({ x: eyeX, y: eyeY, transition: { duration: 0.5, ease: "easeOut" } });
-
-      // Animar nariz
       noseControls.start({ x: noseX, y: noseY, rotate: diffX * 0.03, transition: { duration: 0.5, ease: "easeOut" } });
-
-      // Animar boca (solo traslación y rotación, el morphing es por email)
       mouthControls.start({ x: mouthX, y: mouthY, rotate: diffX * 0.03, transition: { duration: 0.5, ease: "easeOut" } });
-
-      // Animar barbilla
       chinControls.start({ x: chinX, y: chinY, scaleY: chinScaleY < 0.5 ? 0.5 : chinScaleY, transition: { duration: 0.5, ease: "easeOut" } });
-
-      // Animar cara
       faceControls.start({ x: faceX, y: faceY, skewX: faceSkew, transition: { duration: 0.5, ease: "easeOut" } });
-
-      // Animar cejas
       eyebrowControls.start({ x: eyebrowX, y: eyebrowY, skewX: eyebrowSkew, transition: { duration: 0.5, ease: "easeOut" } });
-
-      // Animar orejas
       outerEarLControls.start({ x: outerEarX, y: -outerEarY, transition: { duration: 0.5, ease: "easeOut" } });
       outerEarRControls.start({ x: outerEarX, y: outerEarY, transition: { duration: 0.5, ease: "easeOut" } });
       earHairLControls.start({ x: -outerEarX, y: -outerEarY, transition: { duration: 0.5, ease: "easeOut" } });
       earHairRControls.start({ x: -outerEarX, y: outerEarY, transition: { duration: 0.5, ease: "easeOut" } });
-
-      // Animar cabello
       hairControls.start({ x: hairX, scaleY: hairScaleY, transition: { duration: 0.5, ease: "easeOut" } });
     };
 
@@ -252,10 +206,8 @@ const YetiLogin: React.FC<YetiLoginProps> = ({
     return () => {
       window.removeEventListener('mousemove', handleEyeAndFaceMove);
     };
-  }, [email, eyeLControls, eyeRControls, noseControls, mouthControls, chinControls, faceControls, eyebrowControls, outerEarLControls, outerEarRControls, earHairLControls, earHairRControls, hairControls]); // Dependencias de los controladores de animación
+  }, [email, eyeLControls, eyeRControls, noseControls, mouthControls, chinControls, faceControls, eyebrowControls, outerEarLControls, outerEarRControls, earHairLControls, earHairRControls, hairControls]);
 
-
-  // Función para resetear las animaciones de la cara
   const resetFaceAnimations = useCallback(() => {
     eyeLControls.start({ x: 0, y: 0, transition: { duration: 0.5, ease: "easeOut" } });
     eyeRControls.start({ x: 0, y: 0, transition: { duration: 0.5, ease: "easeOut" } });
@@ -305,6 +257,7 @@ const YetiLogin: React.FC<YetiLoginProps> = ({
     <form className={styles.yetiForm} autoComplete="off" onSubmit={handleSubmit} aria-label={formMode === 'login' ? t.login : t.signup}>
       <div ref={svgContainerRef} className={styles.svgContainer}>
         <div>
+          {/* SVG COMPLETO DEL YETI */}
           <svg className={styles.mySVG} xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 200 200">
             <defs>
               <circle id="armMaskPath" cx="100" cy="100" r="100" />
@@ -314,10 +267,6 @@ const YetiLogin: React.FC<YetiLoginProps> = ({
             </clipPath>
             <circle cx="100" cy="100" r="100" fill="#a9ddf3" />
             <g className="body">
-              {/* bodyBGchanged y bodyBGnormal son paths, pero para animar entre ellos se necesita morphSVG,
-                  que framer-motion no soporta directamente para el 'd' de paths diferentes.
-                  Una alternativa es animar la opacidad entre dos paths o usar un solo path dinámico.
-                  Aquí, animamos un pathLength para simular un efecto. */}
               <motion.path
                 className={styles.bodyBGnormal}
                 stroke="#3A5E77"

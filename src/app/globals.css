@@ -1,96 +1,395 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* src/components/clemmont/YetiLogin.module.css */
 
-@layer base {
-  :root {
-    --background: 88 50% 96.3%;
-    --foreground: 0 0% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 88 45% 50%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 199 91% 64.1%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 88 45% 50%;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+/*
+   Las variables CSS --yeti-darkBlue, --yeti-medBlue, etc.
+   DEBEN estar definidas en src/app/globals.css
+   Este archivo (YetiLogin.module.css) solo las consume.
+*/
 
-    /* Variables de color de Yeti añadidas globalmente */
-    --yeti-darkBlue: #217093;
-    --yeti-medBlue: #4eb8dd;
-    --yeti-lightBlue: #ddf1fa;
-    --yeti-inputBG: #f3fafd;
-  }
-  .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 88 45% 50%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 199 91% 64.1%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 88 45% 50%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+.yetiForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--background); /* Usa la variable de Tailwind para el fondo */
+  width: 100%;
+  max-width: 420px; /* Aumentado ligeramente para mejor balance */
+  margin: 0 auto;
+  padding: 2.5rem 2rem 2rem 2rem; /* Más padding para un look más premium */
+  box-sizing: border-box;
+  border: solid 1px var(--border); /* Usa la variable de Tailwind para el borde */
+  border-radius: 1.5em; /* Esquinas más redondeadas */
+  font-family: 'Source Sans Pro', sans-serif;
+  box-shadow: 0 8px 30px 0 rgba(0,0,0,0.15); /* Sombra más pronunciada */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
 
-    /* Variables de color de Yeti para modo oscuro */
-    --yeti-darkBlue: #1a5c7a;
-    --yeti-medBlue: #3a9cc2;
-    --yeti-lightBlue: #a9ddf3;
-    --yeti-inputBG: #1e293b;
+/* Ajustes para el modo oscuro del formulario */
+@media (prefers-color-scheme: dark) {
+  .yetiForm {
+    background-color: var(--card); /* Usa la variable de Tailwind para el fondo de la tarjeta en modo oscuro */
+    box-shadow: 0 8px 40px 0 rgba(0,0,0,0.35); /* Sombra más oscura en modo oscuro */
   }
 }
 
-@layer base {
-  * {
-    @apply border-border;
+.svgContainer {
+  position: relative;
+  width: 220px; /* Ligeramente más grande */
+  height: 220px; /* Ligeramente más grande */
+  margin: 0 auto 2rem; /* Más espacio debajo del Yeti */
+  border-radius: 50%;
+  pointer-events: none;
+}
+.svgContainer div {
+  position: relative;
+  width: 100%;
+  height: 0;
+  overflow: hidden;
+  border-radius: 50%;
+  padding-bottom: 100%;
+}
+.svgContainer .mySVG {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.svgContainer:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: inherit;
+  height: inherit;
+  box-sizing: border-box;
+  border: solid 3px var(--yeti-darkBlue); /* Borde un poco más grueso */
+  border-radius: 50%;
+}
+
+/* Colores SVG para modo oscuro */
+@media (prefers-color-scheme: dark) {
+  .svgContainer circle[fill="#a9ddf3"] { fill: #617e92; }
+  .svgContainer circle[fill="#DDF1FA"] { fill: #4a667a; }
+  .svgContainer path[fill="#DDF1FA"] { fill: #4a667a; }
+  .svgContainer path[stroke="#3A5E77"] { stroke: #88a9c0; }
+  .svgContainer circle[fill="#3a5e77"] { fill: #a9ddf3; }
+  .svgContainer path[fill="#3a5e77"] { fill: #a9ddf3; }
+  .svgContainer path[fill="#617E92"] { fill: #88a9c0; }
+  .svgContainer path[fill="#cc4a6c"] { fill: #e96d8a; }
+  .svgContainer path[fill="#FFFFFF"] { fill: #334155; }
+}
+
+
+.inputGroup {
+  width: 100%;
+  margin-bottom: 1.5rem; /* Ajustado para más espacio entre grupos */
+  padding: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* Espacio consistente entre label y input */
+}
+.inputGroup:last-of-type {
+  margin-bottom: 0;
+}
+.inputGroupError {
+  color: var(--destructive);
+  font-size: 0.95rem;
+  margin-top: -0.5rem; /* Mover el error un poco más arriba */
+  margin-bottom: 1rem;
+}
+.inputGroupSwitch {
+  text-align: center;
+  font-size: 0.95rem;
+  color: var(--muted-foreground);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem; /* Más espacio arriba del switch */
+}
+.inputGroupSwitch button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  color: var(--primary); /* Color primario para el enlace del switch */
+  font-weight: 600; /* Más énfasis */
+  transition: color 0.2s ease;
+}
+.inputGroupSwitch button:hover {
+  color: var(--primary-foreground); /* Un color más claro al pasar el ratón */
+  text-decoration: none; /* Quitar subrayado en hover */
+}
+
+
+.yetiForm input[type="email"],
+.yetiForm input[type="password"],
+.yetiForm input[type="text"] {
+  display: block;
+  margin: 0;
+  padding: 1rem 1.25rem; /* Más padding para que el texto respire */
+  background-color: var(--yeti-inputBG);
+  border: solid 1.5px var(--border); /* Borde más sutil */
+  border-radius: 0.75rem; /* Bordes más redondeados */
+  -webkit-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
+  width: 100%;
+  height: 55px; /* Altura optimizada */
+  font-size: 1.15em; /* Tamaño de fuente ligeramente más grande */
+  color: #353538;
+  font-weight: 500;
+  font-family: inherit;
+  transition: box-shadow 0.2s linear, border-color 0.25s ease-out, background-color 0.3s ease, color 0.3s ease;
+  outline: none;
+}
+.yetiForm input[type="email"]:focus,
+.yetiForm input[type="password"]:focus,
+.yetiForm input[type="text"]:focus {
+  outline: none;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1); /* Sombra al enfocar */
+  border-color: var(--yeti-medBlue); /* Borde de color al enfocar */
+}
+/* Colores de input para modo oscuro */
+@media (prefers-color-scheme: dark) {
+  .yetiForm input[type="email"],
+  .yetiForm input[type="password"],
+  .yetiForm input[type="text"] {
+    background-color: var(--input);
+    color: var(--foreground);
+    border-color: var(--border);
   }
-  body {
-    @apply bg-background text-foreground;
+  .yetiForm input[type="email"]:focus,
+  .yetiForm input[type="password"]:focus,
+  .yetiForm input[type="text"]:focus {
+    border-color: var(--primary); /* Borde primario al enfocar en dark mode */
+  }
+}
+
+
+.yetiForm label {
+  margin: 0; /* Controlado por gap del inputGroup */
+  display: block;
+  font-size: 1rem; /* Tamaño de label más legible */
+  color: var(--foreground); /* Usa el color de texto principal */
+  font-weight: 600; /* Más énfasis */
+  font-family: inherit;
+  transition: color 0.3s ease;
+}
+/* Color de label para modo oscuro */
+@media (prefers-color-scheme: dark) {
+  .yetiForm label {
+    color: var(--foreground);
+  }
+}
+
+
+.yetiForm button[type="submit"] {
+  display: block;
+  margin: 0;
+  padding: 0.8rem 1.5rem; /* Más padding para el botón */
+  background: linear-gradient(90deg, var(--yeti-medBlue) 0%, var(--yeti-darkBlue) 100%); /* Degradado para el botón */
+  color: #FFF;
+  border: none;
+  border-radius: 0.75rem; /* Bordes más redondeados */
+  box-sizing: border-box;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra para el botón */
+  width: 100%;
+  height: 60px; /* Altura del botón */
+  font-size: 1.3em; /* Tamaño de fuente del botón */
+  font-weight: 700; /* Más énfasis */
+  cursor: pointer;
+  transition: all 0.2s ease-out;
+}
+.yetiForm button[type="submit"]:hover,
+.yetiForm button[type="submit"]:active {
+  transform: translateY(-2px); /* Pequeño efecto de elevación */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); /* Sombra más grande al pasar el ratón */
+}
+.yetiForm button[type="submit"][disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.helper {
+  position: absolute;
+  z-index: 1;
+  font-family: inherit;
+}
+.helper1 {
+  top: 0;
+  left: 0;
+  /* Posicionamiento y tamaño del helper text */
+  transform: translate(1.25rem, 3.2rem) scale(1); /* Ajustado a nuevo padding/altura */
+  transform-origin: 0 0;
+  color: var(--muted-foreground); /* Color más sutil para el helper */
+  font-size: 1rem; /* Tamaño de helper más pequeño */
+  font-weight: 400;
+  opacity: 0.7;
+  pointer-events: none;
+  transition: transform 0.2s ease-out, opacity 0.2s linear, color 0.3s ease;
+}
+.inputGroup1.focusWithText .helper {
+  transform: translate(1.25rem, 1rem) scale(0.75); /* Mover hacia arriba al enfocar */
+  opacity: 1;
+}
+/* Color del helper para modo oscuro */
+@media (prefers-color-scheme: dark) {
+  .helper1 {
+    color: var(--muted-foreground);
+  }
+}
+
+
+.inputGroup2 #showPasswordToggle {
+  display: block;
+  padding: 0 0 0 1.45em;
+  position: absolute;
+  top: 0.75rem; /* Alineado mejor con el input */
+  right: 0.75rem; /* Alineado mejor con el input */
+  font-size: 1em;
+}
+.inputGroup2 #showPasswordToggle input {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+.inputGroup2 #showPasswordToggle .indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1.2em; /* Tamaño del indicador */
+  height: 1.2em;
+  background-color: var(--yeti-inputBG);
+  border: solid 1.5px var(--yeti-darkBlue);
+  border-radius: 0.35rem; /* Bordes menos redondeados para el indicador */
+  transition: border-color 0.2s ease-out, background-color 0.3s ease;
+}
+.inputGroup2 #showPasswordToggle .indicator:after {
+  content: "";
+  position: absolute;
+  left: 0.35em; /* Ajustado para el nuevo tamaño */
+  top: 0.05em; /* Ajustado para el nuevo tamaño */
+  width: 0.3em;
+  height: 0.6em;
+  border: solid var(--yeti-darkBlue);
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+  visibility: hidden;
+}
+.inputGroup2 #showPasswordToggle input:checked ~ .indicator:after {
+  visibility: visible;
+}
+.inputGroup2 #showPasswordToggle input:focus ~ .indicator,
+.inputGroup2 #showPasswordToggle input:hover ~ .indicator {
+  border-color: var(--yeti-medBlue);
+}
+.inputGroup2 #showPasswordToggle input:disabled ~ .indicator {
+  opacity: 0.5;
+}
+.inputGroup2 #showPasswordToggle input:disabled ~ .indicator:after {
+  visibility: hidden;
+}
+/* Estilos de indicador para modo oscuro */
+@media (prefers-color-scheme: dark) {
+  .inputGroup2 #showPasswordToggle .indicator {
+    background-color: var(--input);
+    border-color: var(--border);
+  }
+  .inputGroup2 #showPasswordToggle .indicator:after {
+    border-color: var(--foreground);
+  }
+  .inputGroup2 #showPasswordToggle input:focus ~ .indicator,
+  .inputGroup2 #showPasswordToggle input:hover ~ .indicator {
+    border-color: var(--primary);
+  }
+}
+
+
+.googleBtn {
+  background: var(--background); /* Color de fondo del botón de Google */
+  color: var(--foreground); /* Color de texto del botón de Google */
+  border: 1px solid var(--border); /* Borde del botón de Google */
+  border-radius: 0.75rem; /* Bordes más redondeados */
+  padding: 0.8rem 1.5rem; /* Más padding */
+  font-size: 1.1em;
+  font-weight: 500;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem; /* Más espacio entre el icono y el texto */
+  transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05); /* Sombra ligera */
+}
+.googleBtn:hover {
+  background: var(--secondary); /* Color secundario al pasar el ratón */
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+.googleBtn:active {
+  background: var(--muted);
+}
+.googleIcon {
+  width: 1.3em; /* Icono ligeramente más grande */
+  height: 1.3em;
+  background: url('https://www.svgrepo.com/show/475656/google-color.svg') no-repeat center/contain;
+  display: inline-block;
+}
+/* Estilos de botón de Google para modo oscuro */
+@media (prefers-color-scheme: dark) {
+  .googleBtn {
+    background: var(--input);
+    color: var(--foreground);
+    border-color: var(--border);
+  }
+  .googleBtn:hover {
+    background: var(--muted);
+  }
+  .googleBtn:active {
+    background: var(--muted-foreground);
+  }
+}
+
+/* Responsive Styles */
+@media (max-width: 500px) {
+  .svgContainer {
+    width: 180px; /* Tamaño del Yeti un poco más pequeño en móvil */
+    height: 180px;
+  }
+  .yetiForm {
+    padding: 1.5rem 1rem;
+    max-width: 95vw; /* Más estrecho en móvil */
+  }
+  .yetiForm input[type="email"],
+  .yetiForm input[type="password"],
+  .yetiForm input[type="text"],
+  .yetiForm button[type="submit"],
+  .googleBtn {
+    height: 50px; /* Inputs y botones más pequeños en móvil */
+    font-size: 1em;
+    padding: 0.8rem 1rem;
+  }
+  .yetiForm label {
+    font-size: 0.9rem;
+  }
+  .helper1 {
+    font-size: 0.75rem;
+    transform: translate(1rem, 2.8rem) scale(1);
+  }
+  .inputGroup1.focusWithText .helper {
+    transform: translate(1rem, 0.8rem) scale(0.75);
+  }
+  .inputGroup2 #showPasswordToggle {
+    top: 0.5rem;
+    right: 0.5rem;
   }
 }

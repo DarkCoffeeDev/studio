@@ -1,34 +1,43 @@
-import type { Metadata } from 'next';
-import './globals.css';
-import { Toaster } from '@/components/ui/toaster';
-import { LanguageProvider } from '@/context/language-context';
-import { AuthProvider } from '@/context/auth-context';
+// src/app/(auth)/layout.tsx
+"use client";
 
-export const metadata: Metadata = {
-  title: 'Clemmont Irrigation Agent',
-  description: 'An AI-powered irrigation assistant.',
-};
+import { useMediaQuery } from "@/hooks/use-media-query"; // Necesitarás crear este hook
+import styles from "@/components/clemmont/YetiLogin.module.css"; // Importa los estilos del Yeti
 
-export default function RootLayout({
+export default function AuthLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
+  const isMobile = useMediaQuery("(max-width: 500px)"); // Usa el breakpoint de tu CSS
+
   return (
-    <html lang="en" className="h-full">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,700;1,400&family=Belleza&display=swap" rel="stylesheet" />
-      </head>
-      <body className="font-body bg-background text-foreground antialiased h-full">
-        <LanguageProvider>
-          <AuthProvider>
+    <div className="flex min-h-screen w-full">
+      {/* Contenedor principal que maneja el layout responsivo */}
+      <div className="flex flex-1 flex-col items-center justify-center p-4 md:p-8 bg-gradient-to-br from-blue-100 to-blue-300 dark:from-slate-900 dark:to-slate-800">
+        {isMobile ? (
+          // Vista Móvil: Yeti arriba, formulario abajo
+          <div className="flex flex-col items-center w-full max-w-sm">
+            <div className={styles.svgContainerMobile}>
+              {/* Aquí se renderizará el SVG del Yeti si se pasa como prop o si el componente YetiLogin es inteligente */}
+              {/* En tu caso, el SVG ya está dentro de YetiLogin, por lo que este div
+                  es solo un placeholder visual para la estructura móvil si lo separaras.
+                  Como el SVG está dentro de YetiLogin, este layout solo posiciona el componente completo.
+                  El estilo .svgContainerMobile se aplicará al contenedor del SVG para simularlo arriba.
+              */}
+            </div>
+            {/* El children (YetiLogin) será el formulario */}
+            <div className="w-full">
+              {children} 
+            </div>
+          </div>
+        ) : (
+          // Vista Escritorio: Formulario centrado, ocupando el espacio disponible
+          <div className="w-full max-w-md mx-auto">
             {children}
-            <Toaster />
-          </AuthProvider>
-        </LanguageProvider>
-      </body>
-    </html>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
