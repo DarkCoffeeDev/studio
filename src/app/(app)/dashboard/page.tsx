@@ -1,5 +1,5 @@
 // src/app/(app)/dashboard/page.tsx
-"use client"; // <--- ¡Añade esta línea al principio!
+"use client"; // Asegura que la página sea un componente cliente
 
 import dynamic from 'next/dynamic';
 

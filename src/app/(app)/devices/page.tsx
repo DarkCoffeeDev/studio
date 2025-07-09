@@ -1,4 +1,5 @@
 // src/app/(app)/devices/page.tsx
+"use client"; // Asegura que la página sea un componente cliente
 
 import dynamic from 'next/dynamic';
 
@@ -6,7 +7,6 @@ import dynamic from 'next/dynamic';
 const DynamicDevicesPageContent = dynamic(() => import('@/components/clemmont/DevicesPageContent'), { ssr: false });
 
 export default function DevicesPage() {
-  // useAuth y useLanguage YA NO se llaman directamente dentro de este archivo
   return (
     <DynamicDevicesPageContent />
   );

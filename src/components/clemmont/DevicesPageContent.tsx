@@ -5,8 +5,8 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useAuth } from '@/context/auth-context'; // useAuth ahora se llama aquí
-import { useLanguage } from '@/context/language-context'; // useLanguage ahora se llama aquí
+import { useAuth } from '@/context/auth-context';
+import { useLanguage } from '@/context/language-context';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';

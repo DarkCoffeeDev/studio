@@ -3,7 +3,7 @@
 
 import { useAuth } from '@/context/auth-context';
 import { useRouter, usePathname } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react'; // Importa useState
 import { Header } from '@/components/clemmont/header';
 import { Skeleton } from '@/components/ui/skeleton';
 import { SidebarProvider, Sidebar, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from '@/components/ui/sidebar';
@@ -35,18 +35,27 @@ export default function AppLayoutContent({
 }: {
   children: React.ReactNode
 }) {
-  const { user, loading } = useAuth(); // useAuth ahora se llama aquí
-  const router = useRouter();
-  const pathname = usePathname();
-  const { t } = useLanguage();
+  const [isClient, setIsClient] = useState(false); // Estado para asegurar la ejecución en cliente
 
   useEffect(() => {
-    if (!loading && !user) {
+    setIsClient(true);
+  }, []);
+
+  // useAuth y useLanguage SOLO se llamarán si isClient es true
+  const { user, loading } = isClient ? useAuth() : { user: null, loading: true, signInWithEmail: () => Promise.resolve(null), signInWithGoogle: () => Promise.resolve(), signUpWithEmail: () => Promise.resolve(null), logout: () => Promise.resolve() };
+  const { t } = isClient ? useLanguage() : { t: {} as any };
+
+  const router = useRouter();
+  const pathname = usePathname();
+  
+
+  useEffect(() => {
+    if (isClient && !loading && !user) { // Asegura que se ejecuta en cliente y después de cargar
       router.replace('/login');
     }
-  }, [user, loading, router]);
+  }, [user, loading, router, isClient]);
 
-  if (loading || !user) {
+  if (!isClient || loading || !user) {
     return <AppSkeleton />;
   }
 
