@@ -1,10 +1,9 @@
-// src/app/(app)/layout.tsx
-"use client"; // <--- ¡Esta línea DEBE ser la primera!
+// src/app/(app)/layout.tsx (Ya debería ser como esto, o similar)
+"use client";
 
 import dynamic from 'next/dynamic';
-import "@/app/globals.css"; // Se corrigió la ruta de importación a una ruta absoluta
+import "@/app/globals.css"; // Esta importación es correcta
 
-// Carga AppLayoutContent dinámicamente y deshabilita el SSR
 const DynamicAppLayoutContent = dynamic(() => import('@/components/clemmont/AppLayoutContent'), { ssr: false });
 
 export default function AppLayout({
