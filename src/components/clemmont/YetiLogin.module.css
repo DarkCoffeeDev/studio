@@ -12,30 +12,30 @@
   align-items: center;
   background-color: var(--background); /* Usa la variable de Tailwind para el fondo */
   width: 100%;
-  max-width: 400px;
+  max-width: 420px; /* Aumentado ligeramente para mejor balance */
   margin: 0 auto;
-  padding: 2.25em;
+  padding: 2.5rem 2rem 2rem 2rem; /* Más padding para un look más premium */
   box-sizing: border-box;
   border: solid 1px var(--border); /* Usa la variable de Tailwind para el borde */
-  border-radius: 0.5em;
+  border-radius: 1.5em; /* Esquinas más redondeadas */
   font-family: 'Source Sans Pro', sans-serif;
-  box-shadow: 0 4px 32px 0 rgba(0,0,0,0.10);
-  transition: background-color 0.3s ease; /* Transición para modo oscuro */
+  box-shadow: 0 8px 30px 0 rgba(0,0,0,0.15); /* Sombra más pronunciada */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* Ajustes para el modo oscuro del formulario */
 @media (prefers-color-scheme: dark) {
   .yetiForm {
     background-color: var(--card); /* Usa la variable de Tailwind para el fondo de la tarjeta en modo oscuro */
-    box-shadow: 0 4px 32px 0 rgba(0,0,0,0.25);
+    box-shadow: 0 8px 40px 0 rgba(0,0,0,0.35); /* Sombra más oscura en modo oscuro */
   }
 }
 
 .svgContainer {
   position: relative;
-  width: 200px;
-  height: 200px;
-  margin: 0 auto 1em;
+  width: 220px; /* Ligeramente más grande */
+  height: 220px; /* Ligeramente más grande */
+  margin: 0 auto 2rem; /* Más espacio debajo del Yeti */
   border-radius: 50%;
   pointer-events: none;
 }
@@ -64,7 +64,7 @@
   width: inherit;
   height: inherit;
   box-sizing: border-box;
-  border: solid 2.5px var(--yeti-darkBlue); /* Usa la variable global */
+  border: solid 3px var(--yeti-darkBlue); /* Borde un poco más grueso */
   border-radius: 50%;
 }
 
@@ -84,12 +84,12 @@
 
 .inputGroup {
   width: 100%;
-  margin: 0 0 2em;
+  margin-bottom: 1.5rem; /* Ajustado para más espacio entre grupos */
   padding: 0;
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem; /* Ajuste: pequeño espacio entre la etiqueta y el input */
+  gap: 0.5rem; /* Espacio consistente entre label y input */
 }
 .inputGroup:last-of-type {
   margin-bottom: 0;
@@ -97,31 +97,34 @@
 .inputGroupError {
   color: var(--destructive);
   font-size: 0.95rem;
-  margin-bottom: 0.5rem;
+  margin-top: -0.5rem; /* Mover el error un poco más arriba */
+  margin-bottom: 1rem;
 }
 .inputGroupSwitch {
   text-align: center;
   font-size: 0.95rem;
   color: var(--muted-foreground);
-  /* Ajuste para el botón de cambio de modo */
-  display: flex; /* Asegura que el span y el botón estén en línea */
-  justify-content: center; /* Centra el contenido */
+  display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 0.5rem; /* Espacio entre el texto y el botón */
+  gap: 0.5rem;
+  margin-top: 1rem; /* Más espacio arriba del switch */
 }
 .inputGroupSwitch button {
   background: none;
   border: none;
   padding: 0;
   margin: 0;
-  font: inherit; /* Hereda la fuente del padre */
+  font: inherit;
   cursor: pointer;
-  text-decoration: underline; /* Asegura el subrayado */
-  color: var(--muted-foreground); /* Color de texto consistente */
+  text-decoration: underline;
+  color: var(--primary); /* Color primario para el enlace del switch */
+  font-weight: 600; /* Más énfasis */
   transition: color 0.2s ease;
 }
 .inputGroupSwitch button:hover {
-  color: var(--primary); /* Cambia de color al pasar el ratón */
+  color: var(--primary-foreground); /* Un color más claro al pasar el ratón */
+  text-decoration: none; /* Quitar subrayado en hover */
 }
 
 
@@ -129,19 +132,19 @@
 .yetiForm input[type="password"],
 .yetiForm input[type="text"] {
   display: block;
-  margin: 0; /* Ajuste: quitar margen inferior */
-  padding: 0.875em 1em 0;
-  background-color: var(--yeti-inputBG); /* Usa la variable global */
-  border: solid 2px var(--yeti-darkBlue); /* Usa la variable global */
-  border-radius: 4px;
+  margin: 0; /* Controlado por gap del inputGroup */
+  padding: 1rem 1.25rem; /* Más padding para que el texto respire */
+  background-color: var(--yeti-inputBG);
+  border: solid 1.5px var(--border); /* Borde más sutil */
+  border-radius: 0.75rem; /* Bordes más redondeados */
   -webkit-appearance: none;
-  appearance: none; /* Añadido para compatibilidad */
+  appearance: none;
   box-sizing: border-box;
   width: 100%;
-  height: 65px;
-  font-size: 1.55em;
+  height: 55px; /* Altura optimizada */
+  font-size: 1.15em; /* Tamaño de fuente ligeramente más grande */
   color: #353538;
-  font-weight: 600;
+  font-weight: 500;
   font-family: inherit;
   transition: box-shadow 0.2s linear, border-color 0.25s ease-out, background-color 0.3s ease, color 0.3s ease;
   outline: none;
@@ -150,8 +153,8 @@
 .yetiForm input[type="password"]:focus,
 .yetiForm input[type="text"]:focus {
   outline: none;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-  border: solid 2px var(--yeti-medBlue); /* Usa la variable global */
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1); /* Sombra al enfocar */
+  border-color: var(--yeti-medBlue); /* Borde de color al enfocar */
 }
 /* Colores de input para modo oscuro */
 @media (prefers-color-scheme: dark) {
@@ -165,17 +168,17 @@
   .yetiForm input[type="email"]:focus,
   .yetiForm input[type="password"]:focus,
   .yetiForm input[type="text"]:focus {
-    border-color: var(--ring);
+    border-color: var(--primary); /* Borde primario al enfocar en dark mode */
   }
 }
 
 
 .yetiForm label {
-  margin: 0; /* Ajuste: quitar margen inferior */
+  margin: 0; /* Controlado por gap del inputGroup */
   display: block;
-  font-size: 1.25em;
-  color: var(--yeti-darkBlue); /* Usa la variable global */
-  font-weight: 700;
+  font-size: 1rem; /* Tamaño de label más legible */
+  color: var(--foreground); /* Usa el color de texto principal */
+  font-weight: 600; /* Más énfasis */
   font-family: inherit;
   transition: color 0.3s ease;
 }
@@ -190,28 +193,30 @@
 .yetiForm button[type="submit"] {
   display: block;
   margin: 0;
-  padding: 0.65em 1em 1em;
-  background-color: var(--yeti-medBlue);
-  border: none;
-  border-radius: 4px;
-  box-sizing: border-box;
-  box-shadow: none;
-  width: 100%;
-  height: 65px;
-  font-size: 1.55em;
+  padding: 0.8rem 1.5rem; /* Más padding para el botón */
+  background: linear-gradient(90deg, var(--yeti-medBlue) 0%, var(--yeti-darkBlue) 100%); /* Degradado para el botón */
   color: #FFF;
-  font-weight: 600;
-  font-family: inherit;
-  transition: background-color 0.2s ease-out;
+  border: none;
+  border-radius: 0.75rem; /* Bordes más redondeados */
+  box-sizing: border-box;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Sombra para el botón */
+  width: 100%;
+  height: 60px; /* Altura del botón */
+  font-size: 1.3em; /* Tamaño de fuente del botón */
+  font-weight: 700; /* Más énfasis */
   cursor: pointer;
+  transition: all 0.2s ease-out;
 }
 .yetiForm button[type="submit"]:hover,
 .yetiForm button[type="submit"]:active {
-  background-color: var(--yeti-darkBlue);
+  transform: translateY(-2px); /* Pequeño efecto de elevación */
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2); /* Sombra más grande al pasar el ratón */
 }
 .yetiForm button[type="submit"][disabled] {
-  opacity: 0.7;
+  opacity: 0.5;
   cursor: not-allowed;
+  transform: translateY(0);
+  box-shadow: none;
 }
 
 .helper {
@@ -222,17 +227,18 @@
 .helper1 {
   top: 0;
   left: 0;
-  transform: translate(1em, 2.2em) scale(1);
+  /* Posicionamiento y tamaño del helper text */
+  transform: translate(1.25rem, 3.2rem) scale(1); /* Ajustado a nuevo padding/altura */
   transform-origin: 0 0;
-  color: var(--yeti-darkBlue);
-  font-size: 1.55em;
+  color: var(--muted-foreground); /* Color más sutil para el helper */
+  font-size: 1rem; /* Tamaño de helper más pequeño */
   font-weight: 400;
-  opacity: 0.65;
+  opacity: 0.7;
   pointer-events: none;
   transition: transform 0.2s ease-out, opacity 0.2s linear, color 0.3s ease;
 }
 .inputGroup1.focusWithText .helper {
-  transform: translate(1em, 1.55em) scale(0.6);
+  transform: translate(1.25rem, 1rem) scale(0.75); /* Mover hacia arriba al enfocar */
   opacity: 1;
 }
 /* Color del helper para modo oscuro */
@@ -243,18 +249,12 @@
 }
 
 
-.inputGroup2 input[type="password"] {
-  padding: 0.4em 1em 0.5em;
-}
-.inputGroup2 input[type="text"] {
-  padding: 0.025em 1em 0;
-}
 .inputGroup2 #showPasswordToggle {
   display: block;
   padding: 0 0 0 1.45em;
   position: absolute;
-  top: 0.25em;
-  right: 0;
+  top: 0.75rem; /* Alineado mejor con el input */
+  right: 0.75rem; /* Alineado mejor con el input */
   font-size: 1em;
 }
 .inputGroup2 #showPasswordToggle input {
@@ -266,18 +266,18 @@
   position: absolute;
   top: 0;
   left: 0;
-  height: 0.85em;
-  width: 0.85em;
+  width: 1.2em; /* Tamaño del indicador */
+  height: 1.2em;
   background-color: var(--yeti-inputBG);
-  border: solid 2px var(--yeti-darkBlue);
-  border-radius: 3px;
+  border: solid 1.5px var(--yeti-darkBlue);
+  border-radius: 0.35rem; /* Bordes menos redondeados para el indicador */
   transition: border-color 0.2s ease-out, background-color 0.3s ease;
 }
 .inputGroup2 #showPasswordToggle .indicator:after {
   content: "";
   position: absolute;
-  left: 0.25em;
-  top: 0.025em;
+  left: 0.35em; /* Ajustado para el nuevo tamaño */
+  top: 0.05em; /* Ajustado para el nuevo tamaño */
   width: 0.2em;
   height: 0.5em;
   border: solid var(--yeti-darkBlue);
@@ -308,34 +308,39 @@
     border-color: var(--foreground);
   }
   .inputGroup2 #showPasswordToggle input:focus ~ .indicator,
-  .inputGroup2 #showPasswordToggle input:hover ~ .indicator {
-    border-color: var(--ring);
+  .inputGroup2 #showPassword2Toggle input:hover ~ .indicator {
+    border-color: var(--primary);
   }
 }
 
 
 .googleBtn {
-  background: #fff;
-  color: #22223b;
-  border: 1px solid #cbd5e1;
-  border-radius: 0.5rem;
-  padding: 0.6rem 0;
-  font-size: 1.05rem;
+  background: var(--background); /* Color de fondo del botón de Google */
+  color: var(--foreground); /* Color de texto del botón de Google */
+  border: 1px solid var(--border); /* Borde del botón de Google */
+  border-radius: 0.75rem; /* Bordes más redondeados */
+  padding: 0.8rem 1.5rem; /* Más padding */
+  font-size: 1.1em;
   font-weight: 500;
   cursor: pointer;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  gap: 0.75rem; /* Más espacio entre el icono y el texto */
+  transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05); /* Sombra ligera */
+}
+.googleBtn:hover {
+  background: var(--secondary); /* Color secundario al pasar el ratón */
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 .googleBtn:active {
-  background: #f1f5f9;
+  background: var(--muted);
 }
 .googleIcon {
-  width: 1.2em;
-  height: 1.2em;
+  width: 1.3em; /* Icono ligeramente más grande */
+  height: 1.3em;
   background: url('https://www.svgrepo.com/show/475656/google-color.svg') no-repeat center/contain;
   display: inline-block;
 }
@@ -346,20 +351,45 @@
     color: var(--foreground);
     border-color: var(--border);
   }
-  .googleBtn:active {
+  .googleBtn:hover {
     background: var(--muted);
+  }
+  .googleBtn:active {
+    background: var(--muted-foreground);
   }
 }
 
 /* Responsive Styles (Mobile Adaptation) */
 @media (max-width: 500px) {
   .svgContainer {
-    width: 100%;
-    min-width: 0;
-    max-width: 100vw;
+    width: 180px; /* Tamaño del Yeti un poco más pequeño en móvil */
+    height: 180px;
   }
   .yetiForm {
-    padding: 1rem 0.5rem;
-    max-width: 98vw;
+    padding: 1.5rem 1rem;
+    max-width: 95vw; /* Más estrecho en móvil */
+  }
+  .yetiForm input[type="email"],
+  .yetiForm input[type="password"],
+  .yetiForm input[type="text"],
+  .yetiForm button[type="submit"],
+  .googleBtn {
+    height: 50px; /* Inputs y botones más pequeños en móvil */
+    font-size: 1em;
+    padding: 0.8rem 1rem;
+  }
+  .yetiForm label {
+    font-size: 0.9rem;
+  }
+  .helper1 {
+    font-size: 0.75rem;
+    transform: translate(1rem, 2.8rem) scale(1);
+  }
+  .inputGroup1.focusWithText .helper {
+    transform: translate(1rem, 0.8rem) scale(0.75);
+  }
+  .inputGroup2 #showPasswordToggle {
+    top: 0.5rem;
+    right: 0.5rem;
   }
 }
