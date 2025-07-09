@@ -1,19 +1,26 @@
-// src/app/(app)/layout.tsx
-"use client"; // <--- ¡Esta línea DEBE ser la primera!
+// src/app/layout.tsx - CORRECTED ROOT LAYOUT
+"use client";
 
-import dynamic from 'next/dynamic';
+import { AuthProvider } from '@/context/auth-context';
+import { LanguageProvider } from '@/context/language-context';
+import { Toaster } from '@/components/ui/toaster';
+import "./globals.css";
 
-// Carga AppLayoutContent dinámicamente y deshabilita el SSR
-const DynamicAppLayoutContent = dynamic(() => import('@/components/clemmont/AppLayoutContent'), { ssr: false });
-
-export default function AppLayout({
+export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
-    <DynamicAppLayoutContent>
-      {children}
-    </DynamicAppLayoutContent>
+    <html lang="en">
+      <body>
+        <LanguageProvider>
+          <AuthProvider>
+            {children}
+          </AuthProvider>
+        </LanguageProvider>
+        <Toaster />
+      </body>
+    </html>
   );
 }
