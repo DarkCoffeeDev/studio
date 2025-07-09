@@ -1,4 +1,5 @@
 // src/app/(auth)/login/page.tsx
+"use client"; // <--- ¡Añade esta línea al principio!
 
 import dynamic from 'next/dynamic';
 
@@ -6,7 +7,6 @@ import dynamic from 'next/dynamic';
 const DynamicAuthPageContent = dynamic(() => import('@/components/clemmont/AuthPageContent'), { ssr: false });
 
 export default function LoginPage() {
-  // useAuth y useLanguage YA NO se llaman directamente aquí
   return (
     <DynamicAuthPageContent mode="login" />
   );
