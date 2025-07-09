@@ -6,7 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 export default function Home() {
     const router = useRouter();
     useEffect(() => {
-        router.replace('/dashboard');
+        router.replace('/login');
     }, [router]);
 
     return (
