@@ -1,5 +1,3 @@
-import type { User } from 'firebase/auth';
-
 export type SensorData = {
   humidity: number;
   waterLevel: number;
@@ -14,7 +12,13 @@ export type Message = {
   timestamp: Date;
 };
 
-export type AppUser = User;
+export type AppUser = {
+  uid: string;
+  email: string;
+  displayName: string;
+  password?: string;
+  photoURL?: string;
+};
 
 export type Device = {
   id: string;
