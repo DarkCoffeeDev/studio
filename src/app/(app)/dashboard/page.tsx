@@ -1,4 +1,5 @@
 // src/app/(app)/dashboard/page.tsx
+"use client"; // <--- ¡Añade esta línea al principio!
 
 import dynamic from 'next/dynamic';
 
@@ -6,7 +7,6 @@ import dynamic from 'next/dynamic';
 const DynamicClemmontDashboard = dynamic(() => import('@/components/clemmont/dashboard'), { ssr: false });
 
 export default function DashboardPage() {
-  // useLanguage YA NO se llama directamente dentro de este archivo
   return (
     <DynamicClemmontDashboard />
   );
