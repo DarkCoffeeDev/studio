@@ -1,20 +1,26 @@
-// src/app/(auth)/layout.tsx
-"use client"; // Mantiene el layout como componente cliente
+// src/app/layout.tsx
+"use client"; // Muy importante que sea un cliente aquí
 
-// Ya no necesitamos useMediaQuery aquí porque el layout raíz provee los contextos
-// y el diseño de la página de autenticación se maneja dentro de AuthPageContent.
+import { AuthProvider } from '@/context/auth-context';
+import { LanguageProvider } from '@/context/language-context';
+import { Toaster } from '@/components/ui/toaster';
+import "./globals.css"; // Asegúrate de que esta línea esté, es tu CSS principal.
 
-export default function AuthLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen w-full bg-gradient-to-br from-blue-100 to-blue-300 dark:from-slate-900 dark:to-slate-800">
-      {/* El contenido (AuthPageContent dinámico) se centrará aquí */}
-      <div className="flex flex-1 items-center justify-center p-4 md:p-8">
-        {children}
-      </div>
-    </div>
+    <html lang="en">
+      <body>
+        <LanguageProvider>
+          <AuthProvider>
+            {children}
+          </AuthProvider>
+        </LanguageProvider>
+        <Toaster />
+      </body>
+    </html>
   );
 }
