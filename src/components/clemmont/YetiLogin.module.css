@@ -54,7 +54,7 @@
 .yetiForm input:focus {
   border: 1.5px solid #38bdf8;
 }
-label {
+.yetiForm label {
   font-size: 0.98rem;
   font-weight: 500;
   color: var(--label-fg, #334155);
@@ -135,7 +135,7 @@ button[type="submit"][disabled] {
     color: #f1f5f9;
     border: 1px solid #334155;
   }
-  label {
+  .yetiForm label {
     color: #f1f5f9;
   }
   .googleBtn {
