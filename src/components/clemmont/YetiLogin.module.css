@@ -59,7 +59,7 @@
   font-weight: 500;
   color: var(--label-fg, #334155);
 }
-button[type="submit"] {
+.yetiForm button[type="submit"] {
   background: linear-gradient(90deg, #38bdf8 0%, #0ea5e9 100%);
   color: #fff;
   border: none;
@@ -71,7 +71,7 @@ button[type="submit"] {
   width: 100%;
   transition: background 0.2s;
 }
-button[type="submit"][disabled] {
+.yetiForm button[type="submit"][disabled] {
   opacity: 0.7;
   cursor: not-allowed;
 }
