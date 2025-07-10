@@ -4,14 +4,12 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 
-// Define el tipo para el objeto de usuario (simplificado para el mock)
 interface User {
-  id: string;
+  _id?: string;
   email: string;
   username?: string;
 }
 
-// Define el tipo para el contexto de autenticación
 interface AuthContextType {
   user: User | null;
   loading: boolean;
@@ -21,46 +19,87 @@ interface AuthContextType {
   logout: () => Promise<void>;
 }
 
-// Crea el contexto de autenticación
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Componente proveedor de autenticación
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true); // Inicia en true para indicar que estamos cargando el estado de autenticación
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
-    // Esto se ejecuta solo en el cliente
     if (typeof window !== 'undefined') {
-      const storedUser = sessionStorage.getItem('mockUser');
+      const storedUser = localStorage.getItem('currentUser');
       if (storedUser) {
         try {
           setUser(JSON.parse(storedUser));
         } catch (e) {
           console.error("Error parsing stored user:", e);
-          sessionStorage.removeItem('mockUser'); // Limpiar si hay un error de parseo
+          localStorage.removeItem('currentUser');
         }
       }
-      setLoading(false); // Una vez que se intenta cargar desde sessionStorage, el loading termina
+      setLoading(false);
     }
   }, []);
 
-  // Funciones mock de autenticación
   const signInWithEmail = async (email: string, password: string): Promise<User | null> => {
     setLoading(true);
-    // Simula una llamada a la API
-    await new Promise(resolve => setTimeout(resolve, 500));
-    if (email === "test@example.com" && password === "password123") {
-      const mockUser: User = { id: "1", email: "test@example.com", username: "TestUser" };
-      setUser(mockUser);
-      if (typeof window !== 'undefined') {
-        sessionStorage.setItem('mockUser', JSON.stringify(mockUser)); // Guarda en sessionStorage
+    try {
+      const response = await fetch('/api/auth/login', { // Llama a tu API Route real
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setUser(data.user);
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('currentUser', JSON.stringify(data.user));
+        }
+        setLoading(false);
+        router.push('/dashboard');
+        return data.user;
+      } else {
+        alert(data.message || "Login failed");
+        setLoading(false);
+        return null;
       }
+    } catch (error: any) {
+      console.error("Login request failed:", error);
+      alert("An error occurred during login: " + error.message);
       setLoading(false);
-      return mockUser;
-    } else {
+      return null;
+    }
+  };
+
+  const signUpWithEmail = async (username: string, email: string, password: string): Promise<User | null> => {
+    setLoading(true);
+    try {
+      const response = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, email, password }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        // Usa el usuario retornado por la API (incluye _id)
+        setUser(data.user);
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('currentUser', JSON.stringify(data.user));
+        }
+        setLoading(false);
+        router.push('/dashboard');
+        return data.user;
+      } else {
+        alert(data.message || "Signup failed");
+        setLoading(false);
+        return null;
+      }
+    } catch (error: any) {
+      console.error("Signup request failed:", error);
+      alert("An error occurred during signup: " + error.message);
       setLoading(false);
-      alert("Credenciales incorrectas (mock)");
       return null;
     }
   };
@@ -68,22 +107,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signInWithGoogle = async (): Promise<User | null> => {
     setLoading(true);
     await new Promise(resolve => setTimeout(resolve, 500));
-    const mockUser: User = { id: "2", email: "google@example.com", username: "GoogleUser" };
+    const mockUser: User = { _id: "google-mock-id", email: "google@example.com", username: "GoogleUser" };
     setUser(mockUser);
     if (typeof window !== 'undefined') {
-      sessionStorage.setItem('mockUser', JSON.stringify(mockUser)); // Guarda en sessionStorage
-    }
-    setLoading(false);
-    return mockUser;
-  };
-
-  const signUpWithEmail = async (username: string, email: string, password: string): Promise<User | null> => {
-    setLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 500));
-    const mockUser: User = { id: "3", email: email, username: username };
-    setUser(mockUser);
-    if (typeof window !== 'undefined') {
-      sessionStorage.setItem('mockUser', JSON.stringify(mockUser)); // Guarda en sessionStorage
+      localStorage.setItem('currentUser', JSON.stringify(mockUser));
+      window.location.href = '/dashboard'; // Forzar redirección
     }
     setLoading(false);
     return mockUser;
@@ -94,9 +122,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await new Promise(resolve => setTimeout(resolve, 300));
     setUser(null);
     if (typeof window !== 'undefined') {
-      sessionStorage.removeItem('mockUser'); // Elimina de sessionStorage
+      localStorage.removeItem('currentUser');
     }
     setLoading(false);
+    router.push('/login');
   };
 
   const value = {
@@ -115,7 +144,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 }
 
-// Hook personalizado para usar el contexto de autenticación
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
