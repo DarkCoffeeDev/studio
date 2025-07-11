@@ -15,7 +15,7 @@ const initialSensorData: SensorData = {
   temperature: 24,
 };
 
-export function ClemmontDashboard() {
+export default function ClemmontDashboard() {
   const { t, language } = useLanguage();
   const { user } = useAuth();
   const [messages, setMessages] = useState<Message[]>([]);
